@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hôm Nay Ăn Gì? - Gợi Ý Món Ngon Mỗi Ngày</title>
+    <!-- Tải Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tải Google Fonts: Be Vietnam Pro cho giao diện tiếng Việt hiện đại -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    <!-- Tải FontAwesome cho các icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Be Vietnam Pro"', 'sans-serif'],
+                    },
+                    colors: {
+                        cream: {
+                            50: '#FFFDF9',
+                            100: '#FFF8EB',
+                            200: '#FEEED1',
+                        },
+                        brand: {
+                            400: '#FB923C',
+                            500: '#F97316',
+                            600: '#EA580C',
+                            700: '#C2410C',
+                        }
+                    },
+                    animation: {
+                        'bounce-slow': 'bounce 2s infinite',
+                        'fade-in': 'fadeIn 0.4s ease-out forwards',
+                        'pop': 'pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        pop: {
+                            '0%': { transform: 'scale(0.9)', opacity: '0' },
+                            '100%': { transform: 'scale(1)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Tùy chỉnh thanh cuộn cho mượt mà */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FFF8EB;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #FDBA74;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #F97316;
+        }
+    </style>
+</head>
+<body class="bg-cream-100 text-stone-800 min-h-screen flex flex-col selection:bg-brand-500 selection:text-white">
+
+    <!-- Thông báo Toast (Thay thế cho alert) -->
+    <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- Header / Banner -->
+    <header class="bg-gradient-to-r from-brand-500 via-orange-500 to-amber-500 text-white shadow-lg rounded-b-3xl">
+        <div class="max-w-5xl mx-auto px-4 py-8 sm:py-10 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="text-center sm:text-left">
+                <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium mb-3">
+                    <span>🍽️</span>
+                    <span>Trợ lý ẩm thực Việt Nam</span>
+                </div>
+                <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight drop-shadow-sm">
+                    Hôm Nay Ăn Gì?
+                </h1>
+                <p class="text-orange-100 mt-2 text-sm sm:text-base max-w-lg">
+                    Chọn ngay gu ẩm thực của bạn bên dưới để khám phá những món ngon chuẩn vị hoặc để vũ trụ chọn ngẫu nhiên giúp bạn!
+                </p>
+            </div>
+            
+            <!-- Nút mở Modal thêm món mới -->
+            <button onclick="openAddModal()" class="bg-white text-brand-600 hover:bg-cream-50 active:scale-95 transition-all font-bold px-5 py-3 rounded-2xl shadow-md flex items-center gap-2 shrink-0 cursor-pointer">
+                <i class="fa-solid fa-plus-circle text-lg"></i>
+                <span>Thêm món của bạn</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Nội dung chính -->
+    <main class="flex-grow max-w-5xl w-full mx-auto px-4 py-6 sm:py-8 space-y-8">
+        
+        <!-- Khu vực Bộ lọc tiêu chí -->
+        <section class="bg-white rounded-3xl p-5 sm:p-7 shadow-sm border border-orange-100">
+            <div class="flex items-center justify-between mb-5 pb-3 border-b border-orange-100">
+                <h2 class="text-lg sm:text-xl font-bold text-stone-800 flex items-center gap-2">
+                    <span class="w-8 h-8 rounded-xl bg-orange-100 text-brand-600 flex items-center justify-center text-sm">
+                        <i class="fa-solid fa-sliders"></i>
+                    </span>
+                    <span>Bạn đang thèm món như thế nào?</span>
+                </h2>
+                <div class="flex items-center gap-2">
+                    <button onclick="resetDefaultData()" id="btn-reset-data" class="hidden text-xs font-medium text-stone-400 hover:text-red-500 transition-colors cursor-pointer py-1 px-2 rounded-lg hover:bg-red-50" title="Khôi phục danh sách món mặc định">
+                        <i class="fa-solid fa-database"></i> Khôi phục gốc
+                    </button>
+                    <button onclick="resetFilters()" class="text-sm font-semibold text-brand-600 hover:text-brand-700 bg-orange-50 hover:bg-orange-100 transition-colors flex items-center gap-1.5 cursor-pointer py-1.5 px-3 rounded-xl">
+                        <i class="fa-solid fa-rotate-left"></i>
+                        <span>Xóa bộ lọc</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Danh sách 4 nhóm tiêu chí (Mỗi nhóm có nút Tất cả) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="filter-groups">
+                <!-- Nhóm 1: Nhiệt độ -->
+                <div class="space-y-2.5">
+                    <label class="text-xs font-bold uppercase tracking-wider text-stone-400 flex items-center gap-1.5">
+                        <i class="fa-solid fa-temperature-half text-brand-500"></i> 1. Nhiệt độ món ăn
+                    </label>
+                    <div class="flex flex-wrap gap-2" data-category="temp">
+                        <button type="button" data-value="ALL" class="filter-chip active-chip px-3.5 py-2 rounded-full text-sm font-semibold border border-brand-500 bg-brand-500 text-white shadow-sm transition-all cursor-pointer select-none">
+                            ✨ Tất cả
+                        </button>
+                        <button type="button" data-value="Nóng hổi" class="filter-chip px-3.5 py-2 rounded-full text-sm font-medium border border-stone-200 bg-cream-50 text-stone-600 hover:border-brand-400 transition-all cursor-pointer select-none">
+                            🔥 Nóng hổi
+                        </button>
+                        <button type="button" data-value="Mát lạnh / Nguội" class="filter-chip px-3.5 py-2 rounded-full text-sm font-medium border border-stone-200 bg-cream-50 text-stone-600 hover:border-brand-400 transition-all cursor-pointer select-none">
+                            ❄️ Mát lạnh / Nguội
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Nhóm 2: Loại món -->
+                <div class="space-y-2.5">
+                    <label class="text-xs font-bold uppercase tracking-wider text-stone-400 flex items-center gap-1.5">
+                        <i class="fa-solid fa-bowl-food text-brand-500"></i> 2. Hình thức món
+                    </label>
+                    <div class="flex flex-wrap gap-2" data-category="type">
+                        <button type="button" data-value="ALL" class="filter-chip active-chip px-3.5 py-2 rounded-full text-sm font-semibold border border-brand-500 bg-brand-500 text-white shadow-sm transition-all cursor-pointer select-none">
+                            ✨ Tất cả
+                        </button>
+                        <button type="button" data-value="Món nước" class="filter-chip px-3.5 py-2 rounded-full text-sm font-medium border border-stone-200 bg-cream-50 text-stone-600 hover:border-brand-400 transition-all cursor-pointer select-none">
+                            🍜 Món nước
+                        </button>
+                        <button type="button" data-value="Món khô" class="filter-chip px-3.5 py-2 rounded-full text-sm font-medium border border-stone-200 bg-cream-50 text-stone-600 hover:border-brand-400 transition-all cursor-pointer select-none">
+                            🍛 Món khô
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Nhóm 3: Khẩu vị / Cảm giác -->
+                <div class="space-y-2.5">
+                    <label class="text-xs font-bold uppercase tracking-wider text-stone-400 flex items-center gap-1.5">
+                        <i class="fa-solid fa-pepper-hot text-brand-500"></i> 3. Khẩu vị / Cảm giác
+                    </label>
+                    <div class="flex flex-wrap gap-2" data-category="taste">
+                        <button type="button" data-value="ALL" class="filter-chip active-chip px-3.5 py-2 rounded-full text-sm font-semibold border border-brand-500 bg-brand-500 text-white shadow-sm transition-all cursor-pointer select-none">
+                            ✨ Tất cả
+                        </button>
+                        <button type="button" data-value="Đậm đà / Béo ngậy" class="filter-chip px-3.5 py-2 rounded-full text-sm font-medium border border-stone-200 bg-cream-50 text-stone-600 hover:border-brand-400 transition-all cursor-pointer select-none">
+                            🍖 Đậm đà / Béo ngậy
+                        </button>
+                        <button type="button" data-value="Thanh đạm / Nhẹ bụng" class="filter-chip px-3.5 py-2 rounded-full text-sm font-medium border border-stone-200 bg-cream-50 text-stone-600 hover:border-brand-400 transition-all cursor-pointer select-none">
+                            🥬 Thanh đạm / Nhẹ bụng
+                        </button>
+                        <button type="button" data-value="Chua cay / Kích thích" class="filter-chip px-3.5 py-2 rounded-full text-sm font-medium border border-stone-200 bg-cream-50 text-stone-600 hover:border-brand-400 transition-all cursor-pointer select-none">
+                            🌶️ Chua cay / Kích thích
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Nhóm 4: Bữa ăn -->
+                <div class="space-y-2.5">
+                    <label class="text-xs font-bold uppercase tracking-wider text-stone-400 flex items-center gap-1.5">
+                        <i class="fa-solid fa-clock text-brand-500"></i> 4. Bữa ăn / Thời điểm
+                    </label>
+                    <div class="flex flex-wrap gap-2" data-category="meal">
+                        <button type="button" data-value="ALL" class="filter-chip active-chip px-3.5 py-2 rounded-full text-sm font-semibold border border-brand-500 bg-brand-500 text-white shadow-sm transition-all cursor-pointer select-none">
+                            ✨ Tất cả
+                        </button>
+                        <button type="button" data-value="Ăn sáng" class="filter-chip px-3.5 py-2 rounded-full text-sm font-medium border border-stone-200 bg-cream-50 text-stone-600 hover:border-brand-400 transition-all cursor-pointer select-none">
+                            🌅 Ăn sáng
+                        </button>
+                        <button type="button" data-value="Bữa chính (Trưa/Tối)" class="filter-chip px-3.5 py-2 rounded-full text-sm font-medium border border-stone-200 bg-cream-50 text-stone-600 hover:border-brand-400 transition-all cursor-pointer select-none">
+                            ☀️ Bữa chính (Trưa/Tối)
+                        </button>
+                        <button type="button" data-value="Ăn vặt / Khuya" class="filter-chip px-3.5 py-2 rounded-full text-sm font-medium border border-stone-200 bg-cream-50 text-stone-600 hover:border-brand-400 transition-all cursor-pointer select-none">
+                            🧋 Ăn vặt / Khuya
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Các nút hành động chính -->
+            <div class="mt-8 pt-5 border-t border-orange-100 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+                <button onclick="applyFilters(true)" class="w-full sm:w-auto bg-brand-500 hover:bg-brand-600 active:scale-95 text-white font-bold px-7 py-3.5 rounded-2xl shadow-md shadow-orange-200 transition-all flex items-center justify-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <span>Xem thực đơn phù hợp</span>
+                </button>
+                <button id="btn-random" onclick="pickRandomDish()" class="w-full sm:w-auto bg-amber-400 hover:bg-amber-500 active:scale-95 text-stone-900 font-bold px-7 py-3.5 rounded-2xl shadow-md shadow-amber-200 transition-all flex items-center justify-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-dice text-lg"></i>
+                    <span>Chọn ngẫu nhiên 1 món!</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Khu vực hiển thị món được chọn ngẫu nhiên (Spotlight / Xổ số) -->
+        <section id="spotlight-section" class="hidden">
+            <div class="bg-gradient-to-br from-amber-50 via-orange-50 to-cream-100 border-2 border-brand-500 rounded-3xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
+                <div class="absolute -right-6 -top-6 text-8xl opacity-10 pointer-events-none select-none">🎉</div>
+                <div class="flex items-center justify-between mb-4">
+                    <span id="spotlight-badge" class="inline-flex items-center gap-1.5 bg-brand-500 text-white text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full shadow-sm">
+                        <i class="fa-solid fa-crown text-amber-200"></i> Chân ái hôm nay của bạn
+                    </span>
+                    <button onclick="closeSpotlight()" class="text-stone-400 hover:text-stone-700 p-1.5 rounded-full hover:bg-white/60 transition-colors cursor-pointer" title="Đóng">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+                <div id="spotlight-content" class="flex flex-col sm:flex-row items-center gap-6">
+                    <!-- Nội dung món ngẫu nhiên được render bằng JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Khu vực Danh sách kết quả -->
+        <section class="space-y-5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-white px-5 py-4 rounded-2xl border border-orange-100 shadow-xs">
+                <h2 class="text-lg sm:text-xl font-extrabold text-stone-800 flex items-center gap-2">
+                    <i class="fa-solid fa-utensils text-brand-500"></i>
+                    <span id="dish-count-text">Tìm thấy 54 món phù hợp</span>
+                </h2>
+                <div id="active-filter-summary" class="text-xs sm:text-sm text-stone-500 font-medium">
+                    Đang hiển thị toàn bộ thực đơn
+                </div>
+            </div>
+
+            <!-- Lưới hiển thị thẻ món ăn khớp 100% -->
+            <div id="dish-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                <!-- Các thẻ món ăn sẽ được JS chèn vào đây -->
+            </div>
+
+            <!-- Khu vực Gợi ý gần nhất (Hiển thị tự động nếu kết quả khớp < 2 món) -->
+            <div id="near-match-section" class="hidden pt-6 border-t-2 border-dashed border-orange-200 space-y-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-lg font-extrabold text-stone-800 flex items-center gap-2">
+                            <span class="text-xl">💡</span> Gợi ý gần nhất (Phù hợp 3/4 tiêu chí)
+                        </h3>
+                        <p class="text-xs sm:text-sm text-stone-500">Mở rộng thêm lựa chọn ngon miệng sát với gu hiện tại của bạn</p>
+                    </div>
+                </div>
+                <div id="near-match-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                    <!-- Thẻ món ăn gợi ý gần nhất -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-orange-100 py-6 mt-12 text-center text-sm text-stone-500">
+        <div class="max-w-5xl mx-auto px-4">
+            <p>🍲 <strong>Hôm Nay Ăn Gì?</strong> — Kho dữ liệu 54+ món ngon Việt Nam giúp bạn chốt đơn bữa ăn trong tích tắc.</p>
+        </div>
+    </footer>
+
+    <!-- Modal Thêm Món Mới -->
+    <div id="add-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-stone-900/50 backdrop-blur-sm p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-orange-100 max-h-[90vh] overflow-y-auto animate-pop">
+            <div class="flex items-center justify-between pb-4 border-b border-orange-100 mb-5">
+                <h3 class="text-xl font-extrabold text-stone-800 flex items-center gap-2">
+                    <span class="text-2xl">👨‍🍳</span> Thêm món ăn của bạn
+                </h3>
+                <button onclick="closeAddModal()" class="text-stone-400 hover:text-stone-700 w-8 h-8 rounded-full hover:bg-stone-100 flex items-center justify-center transition-colors cursor-pointer">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <form id="add-dish-form" onsubmit="handleAddDish(event)" class="space-y-4">
+                <!-- Tên món & Emoji -->
+                <div class="grid grid-cols-4 gap-3">
+                    <div class="col-span-1">
+                        <label class="block text-xs font-bold text-stone-600 mb-1">Biểu tượng</label>
+                        <input type="text" id="new-emoji" value="🍲" maxlength="4" required
+                            class="w-full text-center text-2xl bg-cream-50 border border-stone-200 rounded-xl py-2.5 focus:outline-none focus:border-brand-500">
+                    </div>
+                    <div class="col-span-3">
+                        <label class="block text-xs font-bold text-stone-600 mb-1">Tên món ăn <span class="text-red-500">*</span></label>
+                        <input type="text" id="new-name" placeholder="Ví dụ: Bún riêu cua đồng..." required
+                            class="w-full bg-cream-50 border border-stone-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-brand-500">
+                    </div>
+                </div>
+
+                <!-- Giá tham khảo -->
+                <div>
+                    <label class="block text-xs font-bold text-stone-600 mb-1">Giá tham khảo (VNĐ) <span class="text-red-500">*</span></label>
+                    <input type="text" id="new-price" placeholder="Ví dụ: 35.000đ - 50.000đ" value="35.000đ - 50.000đ" required
+                        class="w-full bg-cream-50 border border-stone-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-brand-500">
+                </div>
+
+                <!-- Mô tả ngắn -->
+                <div>
+                    <label class="block text-xs font-bold text-stone-600 mb-1">Mô tả hấp dẫn <span class="text-red-500">*</span></label>
+                    <textarea id="new-desc" rows="2" placeholder="Mô tả hương vị, nguyên liệu đặc trưng..." required
+                        class="w-full bg-cream-50 border border-stone-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-brand-500"></textarea>
+                </div>
+
+                <!-- Chọn đặc điểm -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-stone-600 mb-1">Nhiệt độ</label>
+                        <select id="new-temp" class="w-full bg-cream-50 border border-stone-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-brand-500">
+                            <option value="Nóng hổi">🔥 Nóng hổi</option>
+                            <option value="Mát lạnh / Nguội">❄️ Mát lạnh / Nguội</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-stone-600 mb-1">Loại món</label>
+                        <select id="new-type" class="w-full bg-cream-50 border border-stone-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-brand-500">
+                            <option value="Món nước">🍜 Món nước</option>
+                            <option value="Món khô">🍛 Món khô</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Khẩu vị -->
+                <div>
+                    <label class="block text-xs font-bold text-stone-600 mb-1">Khẩu vị / Cảm giác</label>
+                    <select id="new-taste" class="w-full bg-cream-50 border border-stone-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-brand-500">
+                        <option value="Đậm đà / Béo ngậy">🍖 Đậm đà / Béo ngậy</option>
+                        <option value="Thanh đạm / Nhẹ bụng">🥬 Thanh đạm / Nhẹ bụng</option>
+                        <option value="Chua cay / Kích thích">🌶️ Chua cay / Kích thích</option>
+                    </select>
+                </div>
+
+                <!-- Bữa ăn (Chọn nhiều) -->
+                <div>
+                    <label class="block text-xs font-bold text-stone-600 mb-1.5">Phù hợp thời điểm (chọn ít nhất 1)</label>
+                    <div class="flex flex-wrap gap-2">
+                        <label class="cursor-pointer">
+                            <input type="checkbox" name="new-meal" value="Ăn sáng" class="peer sr-only">
+                            <span class="inline-block px-3.5 py-1.5 rounded-full text-xs font-semibold border border-stone-200 bg-cream-50 text-stone-600 peer-checked:bg-brand-500 peer-checked:text-white peer-checked:border-brand-500 transition-all">
+                                🌅 Ăn sáng
+                            </span>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="checkbox" name="new-meal" value="Bữa chính (Trưa/Tối)" checked class="peer sr-only">
+                            <span class="inline-block px-3.5 py-1.5 rounded-full text-xs font-semibold border border-stone-200 bg-cream-50 text-stone-600 peer-checked:bg-brand-500 peer-checked:text-white peer-checked:border-brand-500 transition-all">
+                                ☀️ Bữa chính (Trưa/Tối)
+                            </span>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="checkbox" name="new-meal" value="Ăn vặt / Khuya" class="peer sr-only">
+                            <span class="inline-block px-3.5 py-1.5 rounded-full text-xs font-semibold border border-stone-200 bg-cream-50 text-stone-600 peer-checked:bg-brand-500 peer-checked:text-white peer-checked:border-brand-500 transition-all">
+                                🧋 Ăn vặt / Khuya
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="pt-4 flex items-center justify-end gap-3 border-t border-orange-100">
+                    <button type="button" onclick="closeAddModal()" class="px-5 py-2.5 rounded-xl text-sm font-semibold text-stone-600 hover:bg-stone-100 transition-colors cursor-pointer">
+                        Hủy bỏ
+                    </button>
+                    <button type="submit" class="px-6 py-2.5 rounded-xl text-sm font-bold bg-brand-500 hover:bg-brand-600 text-white shadow-md shadow-orange-200 transition-all cursor-pointer">
+                        Lưu vào thực đơn
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // =========================================================================
+        // 1. KHO DỮ LIỆU 54 MÓN ĂN VIỆT NAM PHỦ KÍN MỌI TỔ HỢP 4 TIÊU CHÍ
+        // =========================================================================
+        const defaultDishes = [
+            // --- NHÓM A: NÓNG HỔI + MÓN NƯỚC ---
+            // A1. Nóng hổi + Món nước + Đậm đà / Béo ngậy
+            {
+                id: 1, name: "Phở Bò Tái Nạm Gầu", emoji: "🍜", price: "45.000đ - 65.000đ",
+                bgGradient: "from-amber-100 to-orange-100",
+                desc: "Nước dùng ninh xương bò béo ngậy thơm mùi quế hồi, thịt nạm gầu mềm thơm cùng bánh phở dai.",
+                temp: "Nóng hổi", type: "Món nước", taste: "Đậm đà / Béo ngậy",
+                meal: ["Ăn sáng", "Bữa chính (Trưa/Tối)", "Ăn vặt / Khuya"]
+            },
+            {
+                id: 2, name: "Bánh Canh Cua Giò Heo", emoji: "🦀", price: "40.000đ - 60.000đ",
+                bgGradient: "from-orange-100 to-red-100",
+                desc: "Nước dùng sền sệt gạch cua béo bùi, sợi bánh canh bột lọc dai ngon cùng chả cua và giò heo.",
+                temp: "Nóng hổi", type: "Món nước", taste: "Đậm đà / Béo ngậy",
+                meal: ["Ăn sáng", "Bữa chính (Trưa/Tối)", "Ăn vặt / Khuya"]
+            },
+            {
+                id: 3, name: "Mì Quảng Gà Trứng Cút", emoji: "🍲", price: "35.000đ - 50.000đ",
+                bgGradient: "from-yellow-100 to-amber-100",
+                desc: "Nước nhân đậm đà sánh quyện màu điều đỏ au, ăn kèm bánh tráng mè giòn rụm và đậu phộng rang.",
+                temp: "Nóng hổi", type: "Món nước", taste: "Đậm đà / Béo ngậy",
+                meal: ["Ăn sáng", "Bữa chính (Trưa/Tối)"]
+            },
+            {
+                id: 4, name: "Bún Bò Giò Heo", emoji: "🍖", price: "45.000đ - 60.000đ",
+                bgGradient: "from-orange-100 to-amber-200",
+                desc: "Khoanh giò heo hầm mềm béo ngậy, chả cua, nạm bò hòa quyện nước lèo thơm nồng sả ruốc.",
+                temp: "Nóng hổi", type: "Món nước", taste: "Đậm đà / Béo ngậy",
+                meal: ["Ăn sáng", "Bữa chính (Trưa/Tối)"]
+            },
+            {
+                id: 5, name: "Cháo Sườn Sụn Quẩy Giòn", emoji: "🥣", price: "25.000đ - 40.000đ",
+                bgGradient: "from-stone-100 to-amber-100",
+                desc: "Cháo bột gạo ninh nhừ sánh mịn béo ngậy vị sườn non, rắc ruốc thịt và quẩy giòn tan ấm bụng.",
+                temp: "Nóng hổi", type: "Món nước", taste: "Đậm đà / Béo ngậy",
+                meal: ["Ăn sáng", "Ăn vặt / Khuya"]
+            },
+            {
+                id: 6, name: "Súp Cua Óc Heo Trứng Bắc Thảo", emoji: "🍲", price: "30.000đ - 45.000đ",
+                bgGradient: "from-amber-50 to-orange-100",
+                desc: "Chén súp nóng hổi sánh đặc thịt cua tươi, trứng cút, óc heo béo ngậy rắc tiêu xay thơm nức.",
+                temp: "Nóng hổi", type: "Món nước", taste: "Đậm đà / Béo ngậy",
+                meal: ["Ăn sáng", "Ăn vặt / Khuya"]
+            },
+
+            // A2. Nóng hổi + Món nước + Thanh đạm / Nhẹ bụng
+            {
+                id: 7, name: "Phở Gà Ta Xé Phay", emoji: "🍗", price: "40.000đ - 55.000đ",
+                bgGradient: "from-yellow-50 to-amber-100",
+                desc: "Nước dùng gà trong veo ngọt thanh tự nhiên, thịt gà ta da vàng giòn thơm lá chanh thái chỉ.",
+                temp: "Nóng hổi", type: "Món nước", taste: "Thanh đạm / Nhẹ bụng",
+                meal: ["Ăn sáng", "Bữa chính (Trưa/Tối)", "Ăn vặt / Khuya"]
+            },
+            {
+                id: 8, name: "Hủ Tiếu Nam Vang Nước", emoji: "🍜", price: "40.000đ - 55.000đ",
+                bgGradient: "from-amber-50 to-yellow-100",
+                desc: "Nước lèo hầm xương và tôm khô thanh ngọt, sợi hủ tiếu dai cùng tôm tươi, thịt bằm và trứng cút.",
+                temp: "Nóng hổi", type: "Món nước", taste: "Thanh đạm / Nhẹ bụng",
+                meal: ["Ăn sáng", "Bữa chính (Trưa/Tối)", "Ăn vặt / Khuya"]
+            },
+            {
+                id: 9, name: "Miến Gà Măng Khô", emoji: "🍲", price: "35.000đ - 50.000đ",
+                bgGradient: "from-lime-50 to-amber-100",
+                desc: "Sợi miến dong dai mềm không ngán, măng khô giòn sần sật và nước dùng thanh nhẹ dễ tiêu.",
+                temp: "Nóng hổi", type: "Món nước", taste: "Thanh đạm / Nhẹ bụng",
+                meal: ["Ăn sáng", "Bữa chính (Trưa/Tối)", "Ăn vặt / Khuya"]
+            },
+            {
+                id: 10, name: "Bún Mọc Dọc Mùng", emoji: "🥬", price: "35.000đ - 45.000đ",
+                bgGradient: "from-emerald-50 to-lime-100",
+                desc: "Viên mọc nấm hương giòn thơm cùng dọc mùng xanh mát trong bát nước dùng xương trong vắt.",
+                temp: "Nóng hổi", type: "Món nước", taste: "Thanh đạm / Nhẹ bụng",
+                meal: ["Ăn sáng", "Bữa chính (Trưa/Tối)"]
+            },
+            {
+                id: 11, name: "Cháo Đậu Xanh Trứng Muối", emoji: "🥣", price: "20.000đ - 35.000đ",
+                bgGradient: "from-emerald-50 to-yellow-100",
+                desc: "Cháo trắng nấu đậu xanh bùi mát giải nhiệt, ăn kèm trứng vịt muối mặn mà rất nhẹ bụng.",
+                temp: "Nóng hổi", type: "Món nước", taste: "Thanh đạm / Nhẹ bụng",
+                meal: ["Ăn sáng", "Ăn vặt / Khuya"]
+            },
+
+            // A3. Nóng hổi + Món nước + Chua cay / Kích thích
+            {
+                id: 12, name: "Bún Bò Huế Sa Tế Cay", emoji: "🌶️", price: "45.000đ - 60.000đ",
+                bgGradient: "from-red-100 to-orange-100",
+                desc: "Hương sả ruốc nồng nàn hòa quyện sa tế ớt cay xé lưỡi, vắt thêm miếng chanh tươi bùng nổ vị giác.",
+                temp: "Nóng hổi", type: "Món nước", taste: "Chua cay / Kích thích",
+                meal: ["Ăn sáng", "Bữa chính (Trưa/Tối)"]
+            },
+            {
+                id: 13, name: "Bún Riêu Cua Ốc Chua Thanh", emoji: "🍅", price: "35.000đ - 50.000đ",
+                bgGradient: "from-rose-100 to-orange-100",
+                desc: "Vị chua thanh của cà chua, giấm bỗng quyện gạch cua đồng, ốc nhồi giòn sần sật và mắm tôm.",
+                temp: "Nóng hổi", type: "Món nước", taste: "Chua cay / Kích thích",
+                meal: ["Ăn sáng", "Bữa chính (Trưa/Tối)"]
+            },
+            {
+                id: 14, name: "Lẩu Thái Tomyum Mini 1 Người", emoji: "🥘", price: "65.000đ - 95.000đ",
+                bgGradient: "from-red-100 to-amber-100",
+                desc: "Nồi lẩu chua cay nồng ấm mùi lá chanh, riềng sả với tôm, mực, bò Mỹ và nấm kim châm.",
+                temp: "Nóng hổi", type: "Món nước", taste: "Chua cay / Kích thích",
+                meal: ["Bữa chính (Trưa/Tối)", "Ăn vặt / Khuya"]
+            },
+            {
+                id: 15, name: "Mì Cay Hải Sản 7 Cấp Độ", emoji: "🔥", price: "45.000đ - 60.000đ",
+                bgGradient: "from-red-200 to-orange-100",
+                desc: "Sợi mì Hàn Quốc dai sần sật trong nước dùng kim chi chua cay nóng hổi, đầy ắp tôm mực và xúc xích.",
+                temp: "Nóng hổi", type: "Món nước", taste: "Chua cay / Kích thích",
+                meal: ["Bữa chính (Trưa/Tối)", "Ăn vặt / Khuya"]
+            },
+            {
+                id: 16, name: "Bún Cá Cay Hải Phòng", emoji: "🐟", price: "35.000đ - 45.000đ",
+                bgGradient: "from-orange-100 to-yellow-100",
+                desc: "Cá rô đồng chiên giòn rụm, chả cá dai ngon chan nước dùng chua dịu kèm chí chương cay nồng.",
+                temp: "Nóng hổi", type: "Món nước", taste: "Chua cay / Kích thích",
+                meal: ["Ăn sáng", "Bữa chính (Trưa/Tối)", "Ăn vặt / Khuya"]
+            },
+
+            // --- NHÓM B: NÓNG HỔI + MÓN KHÔ ---
+            // B1. Nóng hổi + Món khô + Đậm đà / Béo ngậy
+            {
+                id: 17, name: "Cơm Tấm Sườn Bì Chả Mỡ Hành", emoji: "🍛", price: "40.000đ - 60.000đ",
+                bgGradient: "from-amber-100 to-yellow-100",
+                desc: "Cơm tấm nóng hổi ăn cùng sườn nướng mật ong cháy cạnh, chả trứng hấp và mỡ hành béo ngậy.",
+                temp: "Nóng hổi", type: "Món khô", taste: "Đậm đà / Béo ngậy",
+                meal: ["Ăn sáng", "Bữa chính (Trưa/Tối)", "Ăn vặt / Khuya"]
+            },
+            {
+                id: 18, name: "Xôi Xéo Hành Phi Ruốc Thịt", emoji: "🍚", price: "20.000đ - 35.000đ",
+                bgGradient: "from-yellow-100 to-amber-200",
+                desc: "Xôi nếp cái hoa vàng dẻo thơm phủ đậu xanh đồ mịn, rưới mỡ gà béo ngậy và hành phi giòn rụm.",
+                temp: "Nóng hổi", type: "Món khô", taste: "Đậm đà / Béo ngậy",
+                meal: ["Ăn sáng", "Ăn vặt / Khuya"]
+            },
+            {
+                id: 19, name: "Bánh Mì Chảo Bò Né Pate", emoji: "🍳", price: "45.000đ - 65.000đ",
+                bgGradient: "from-orange-100 to-amber-100",
+                desc: "Chảo gang xèo xèo thịt bò mềm, trứng ốp la lòng đào, pate gan béo bùi chấm bánh mì nóng giòn.",
+                temp: "Nóng hổi", type: "Món khô", taste: "Đậm đà / Béo ngậy",
+                meal: ["Ăn sáng", "Bữa chính (Trưa/Tối)"]
+            },
+            {
+                id: 20, name: "Cơm Gà Xối Mỡ Giòn Da", emoji: "🍗", price: "40.000đ - 55.000đ",
+                bgGradient: "from-amber-100 to-orange-100",
+                desc: "Đùi gà góc tư chiên xối mỡ da giòn tan, thịt mềm ngọt ăn kèm cơm chiên tỏi đỏ au đậm đà.",
+                temp: "Nóng hổi", type: "Món khô", taste: "Đậm đà / Béo ngậy",
+                meal: ["Bữa chính (Trưa/Tối)", "Ăn vặt / Khuya"]
+            },
+            {
+                id: 21, name: "Bánh Giò Nóng Chả Cốm", emoji: "🥟", price: "20.000đ - 30.000đ",
+                bgGradient: "from-stone-100 to-amber-100",
+                desc: "Bánh giò mềm mịn nóng hổi nhân thịt băm mộc nhĩ tiêu thơm, ăn kèm chả cốm và dưa góp.",
+                temp: "Nóng hổi", type: "Món khô", taste: "Đậm đà / Béo ngậy",
+                meal: ["Ăn sáng", "Ăn vặt / Khuya"]
+            },
+
+            // B2. Nóng hổi + Món khô + Thanh đạm / Nhẹ bụng
+            {
+                id: 22, name: "Bánh Cuốn Nóng Nhân Thịt Mộc Nhĩ", emoji: "🍥", price: "30.000đ - 45.000đ",
+                bgGradient: "from-stone-100 to-orange-50",
+                desc: "Lớp bánh tráng mỏng tang nóng hổi cuốn thịt băm mộc nhĩ, chấm nước mắm ấm thanh nhẹ dễ ăn.",
+                temp: "Nóng hổi", type: "Món khô", taste: "Thanh đạm / Nhẹ bụng",
+                meal: ["Ăn sáng", "Bữa chính (Trưa/Tối)", "Ăn vặt / Khuya"]
+            },
+            {
+                id: 23, name: "Há Cảo & Xíu Mại Hấp Tre", emoji: "🥡", price: "30.000đ - 50.000đ",
+                bgGradient: "from-amber-50 to-stone-100",
+                desc: "Xửng dimsum hấp hơi nước nóng hổi, vỏ bột mỏng trong nhân tôm thịt ngọt thanh không dầu mỡ.",
+                temp: "Nóng hổi", type: "Món khô", taste: "Thanh đạm / Nhẹ bụng",
+                meal: ["Ăn sáng", "Ăn vặt / Khuya"]
+            },
+            {
+                id: 24, name: "Cơm Cháy Kho Quẹt Rau Luộc", emoji: "🥬", price: "45.000đ - 65.000đ",
+                bgGradient: "from-lime-100 to-amber-100",
+                desc: "Đĩa rau củ luộc xanh mướt thanh mát chấm kho quẹt tôm khô tóp mỡ ăn kèm cơm cháy giòn rụm.",
+                temp: "Nóng hổi", type: "Món khô", taste: "Thanh đạm / Nhẹ bụng",
+                meal: ["Bữa chính (Trưa/Tối)"]
+            },
+            {
+                id: 25, name: "Bánh Bao Nhân Thịt Trứng Cút Hấp", emoji: "🥯", price: "18.000đ - 25.000đ",
+                bgGradient: "from-stone-50 to-amber-100",
+                desc: "Bánh bao trắng xốp hấp nóng hổi, nhân thịt nạc băm, miến và trứng cút bùi thơm rất nhẹ bụng.",
+                temp: "Nóng hổi", type: "Món khô", taste: "Thanh đạm / Nhẹ bụng",
+                meal: ["Ăn sáng", "Ăn vặt / Khuya"]
+            },
+            {
+                id: 26, name: "Cơm Gạo Lứt Ức Gà Áp Chảo", emoji: "🥗", price: "45.000đ - 60.000đ",
+                bgGradient: "from-emerald-100 to-lime-100",
+                desc: "Bữa ăn healthy nóng hổi với ức gà áp chảo mọng nước, bông cải xanh và cơm gạo lứt dẻo thơm.",
+                temp: "Nóng hổi", type: "Món khô", taste: "Thanh đạm / Nhẹ bụng",
+                meal: ["Bữa chính (Trưa/Tối)"]
+            },
+
+            // B3. Nóng hổi + Món khô + Chua cay / Kích thích
+            {
+                id: 27, name: "Cơm Rang Dưa Bò Chua Cay", emoji: "🍛", price: "40.000đ - 55.000đ",
+                bgGradient: "from-yellow-100 to-orange-100",
+                desc: "Hạt cơm rang săn giòn quyện vị chua dịu của dưa cải muối, thịt bò xào mềm và tương ớt cay nồng.",
+                temp: "Nóng hổi", type: "Món khô", taste: "Chua cay / Kích thích",
+                meal: ["Bữa chính (Trưa/Tối)", "Ăn vặt / Khuya"]
+            },
+            {
+                id: 28, name: "Bánh Xèo Miền Tây Tôm Thịt", emoji: "🌮", price: "40.000đ - 60.000đ",
+                bgGradient: "from-yellow-100 to-lime-100",
+                desc: "Vỏ bánh vàng giòn rụm nóng hổi cuốn cải xanh, rau rừng chấm nước mắm chua ngọt tỏi ớt cay xè.",
+                temp: "Nóng hổi", type: "Món khô", taste: "Chua cay / Kích thích",
+                meal: ["Bữa chính (Trưa/Tối)", "Ăn vặt / Khuya"]
+            },
+            {
+                id: 29, name: "Bánh Mì Thập Cẩm Tương Ớt Nướng", emoji: "🥖", price: "20.000đ - 35.000đ",
+                bgGradient: "from-amber-100 to-red-100",
+                desc: "Bánh mì nướng giòn nóng hổi kẹp thịt nguội, đồ chua cà rốt củ cải và tương ớt chưng cay kích thích.",
+                temp: "Nóng hổi", type: "Món khô", taste: "Chua cay / Kích thích",
+                meal: ["Ăn sáng", "Ăn vặt / Khuya"]
+            },
+            {
+                id: 30, name: "Bánh Tráng Nướng Đà Lạt", emoji: "🍕", price: "20.000đ - 30.000đ",
+                bgGradient: "from-orange-100 to-red-100",
+                desc: "Bánh tráng nướng giòn tan trên bếp than hồng với trứng cút, khô bò, hành phi, sốt me chua cay.",
+                temp: "Nóng hổi", type: "Món khô", taste: "Chua cay / Kích thích",
+                meal: ["Ăn vặt / Khuya"]
+            },
+            {
+                id: 31, name: "Nem Nướng Nha Trang Cuốn Bánh Tráng", emoji: "🍢", price: "45.000đ - 60.000đ",
+                bgGradient: "from-orange-100 to-amber-100",
+                desc: "Nem lụi nướng than nóng hổi cuốn bánh tráng, xoài chua, dưa leo và nước chấm thịt bằm cay nhẹ.",
+                temp: "Nóng hổi", type: "Món khô", taste: "Chua cay / Kích thích",
+                meal: ["Bữa chính (Trưa/Tối)"]
+            },
+            {
+                id: 32, name: "Bún Thịt Nướng Chả Giò Nóng", emoji: "🥗", price: "35.000đ - 50.000đ",
+                bgGradient: "from-amber-100 to-lime-100",
+                desc: "Thịt nướng và chả giò chiên nóng giòn rụm trộn bún tươi, đồ chua và nước mắm tỏi ớt chua cay.",
+                temp: "Nóng hổi", type: "Món khô", taste: "Chua cay / Kích thích",
+                meal: ["Ăn sáng", "Bữa chính (Trưa/Tối)"]
+            },
+
+            // --- NHÓM C: MÁT LẠNH / NGUỘI + MÓN NƯỚC ---
+            // C1. Mát lạnh / Nguội + Món nước + Đậm đà / Béo ngậy
+            {
+                id: 33, name: "Chè Thái Sầu Riêng Nước Cốt Dừa", emoji: "🍧", price: "30.000đ - 45.000đ",
+                bgGradient: "from-yellow-100 to-amber-100",
+                desc: "Mát lạnh sảng khoái với sầu riêng tươi béo ngậy, mít thái, thốt nốt và nước cốt dừa thơm lừng.",
+                temp: "Mát lạnh / Nguội", type: "Món nước", taste: "Đậm đà / Béo ngậy",
+                meal: ["Ăn sáng", "Bữa chính (Trưa/Tối)", "Ăn vặt / Khuya"]
+            },
+            {
+                id: 34, name: "Trà Sữa Trân Châu Đường Đen Kem Cheese", emoji: "🧋", price: "30.000đ - 50.000đ",
+                bgGradient: "from-amber-100 to-stone-200",
+                desc: "Trà sữa đậm vị trà hòa quyện trân châu đường đen dẻo mềm và lớp kem phô mai mặn béo mát lạnh.",
+                temp: "Mát lạnh / Nguội", type: "Món nước", taste: "Đậm đà / Béo ngậy",
+                meal: ["Ăn sáng", "Bữa chính (Trưa/Tối)", "Ăn vặt / Khuya"]
+            },
+            {
+                id: 35, name: "Chè Bưởi Cốt Dừa An Giang", emoji: "🍨", price: "20.000đ - 30.000đ",
+                bgGradient: "from-lime-100 to-yellow-100",
+                desc: "Cùi bưởi giòn sần sật kết hợp đậu xanh bùi béo, chan nước cốt dừa đặc sánh và đá bào mát rượi.",
+                temp: "Mát lạnh / Nguội", type: "Món nước", taste: "Đậm đà / Béo ngậy",
+                meal: ["Ăn sáng", "Ăn vặt / Khuya"]
+            },
+            {
+                id: 36, name: "Bánh Đúc Nước Cốt Dừa Nguội", emoji: "🥥", price: "20.000đ - 30.000đ",
+                bgGradient: "from-emerald-100 to-amber-100",
+                desc: "Bánh đúc lá dứa dẻo mịn để nguội, chan nước cốt dừa béo ngậy, nước đường thốt nốt và mè rang.",
+                temp: "Mát lạnh / Nguội", type: "Món nước", taste: "Đậm đà / Béo ngậy",
+                meal: ["Ăn sáng", "Bữa chính (Trưa/Tối)", "Ăn vặt / Khuya"]
+            },
+
+            // C2. Mát lạnh / Nguội + Món nước + Thanh đạm / Nhẹ bụng
+            {
+                id: 37, name: "Tào Phớ Nước Đường Hoa Nhài Đá", emoji: "🍮", price: "15.000đ - 25.000đ",
+                bgGradient: "from-amber-50 to-stone-100",
+                desc: "Từng lớp tào phớ mềm mịn tan ngay đầu lưỡi trong nước đường ướp hoa nhài thanh mát nhẹ bụng.",
+                temp: "Mát lạnh / Nguội", type: "Món nước", taste: "Thanh đạm / Nhẹ bụng",
+                meal: ["Ăn sáng", "Bữa chính (Trưa/Tối)", "Ăn vặt / Khuya"]
+            },
+            {
+                id: 38, name: "Chè Khúc Bạch Hạnh Nhân Nhãn Nhục", emoji: "🍨", price: "25.000đ - 40.000đ",
+                bgGradient: "from-stone-50 to-orange-50",
+                desc: "Khúc bạch phô mai mềm mịn thanh mát, nhãn lồng giòn ngọt, hạnh nhân lát bùi bùi giải nhiệt cực đã.",
+                temp: "Mát lạnh / Nguội", type: "Món nước", taste: "Thanh đạm / Nhẹ bụng",
+                meal: ["Ăn sáng", "Bữa chính (Trưa/Tối)", "Ăn vặt / Khuya"]
+            },
+            {
+                id: 39, name: "Sâm Bổ Lượng Giải Nhiệt", emoji: "🥤", price: "20.000đ - 30.000đ",
+                bgGradient: "from-amber-100 to-lime-50",
+                desc: "Thức uống thanh nhiệt truyền thống với táo đỏ, nhãn nhục, hạt sen, phổ tai và rong biển mát lạnh.",
+                temp: "Mát lạnh / Nguội", type: "Món nước", taste: "Thanh đạm / Nhẹ bụng",
+                meal: ["Ăn sáng", "Bữa chính (Trưa/Tối)", "Ăn vặt / Khuya"]
+            },
+            {
+                id: 40, name: "Bún Thang Chan Nước Dùng Nguội Thanh", emoji: "🍜", price: "40.000đ - 55.000đ",
+                bgGradient: "from-yellow-50 to-emerald-50",
+                desc: "Biến tấu thanh mát ngày hè với bún sợi nhỏ, trứng tráng thái chỉ, giò lụa, gà xé và nước dùng thanh.",
+                temp: "Mát lạnh / Nguội", type: "Món nước", taste: "Thanh đạm / Nhẹ bụng",
+                meal: ["Ăn sáng", "Bữa chính (Trưa/Tối)"]
+            },
+
+            // C3. Mát lạnh / Nguội + Món nước + Chua cay / Kích thích
+            {
+                id: 41, name: "Sữa Chua Mít Dầm Đá", emoji: "🍧", price: "25.000đ - 35.000đ",
+                bgGradient: "from-pink-100 to-amber-100",
+                desc: "Vị chua dịu kích thích của sữa chua dẻo hòa quyện mít thái thơm lừng, trân châu và thạch giòn.",
+                temp: "Mát lạnh / Nguội", type: "Món nước", taste: "Chua cay / Kích thích",
+                meal: ["Ăn sáng", "Bữa chính (Trưa/Tối)", "Ăn vặt / Khuya"]
+            },
+            {
+                id: 42, name: "Trà Tắc Xí Muội Nha Đam Đá", emoji: "🍹", price: "15.000đ - 25.000đ",
+                bgGradient: "from-lime-100 to-yellow-100",
+                desc: "Chua ngọt sảng khoái từ tắc tươi, xí muội mặn mà và thạch nha đam giòn sần sật đánh tan cơn ngán.",
+                temp: "Mát lạnh / Nguội", type: "Món nước", taste: "Chua cay / Kích thích",
+                meal: ["Ăn sáng", "Bữa chính (Trưa/Tối)", "Ăn vặt / Khuya"]
+            },
+            {
+                id: 43, name: "Mì Lạnh Trộn Nước Sốt Chua Cay", emoji: "🍜", price: "45.000đ - 65.000đ",
+                bgGradient: "from-red-100 to-sky-100",
+                desc: "Sợi mì kiều mạch dai ngon ngâm nước dùng đá bào chua cay thanh mát, ăn kèm trứng luộc và dưa leo.",
+                temp: "Mát lạnh / Nguội", type: "Món nước", taste: "Chua cay / Kích thích",
+                meal: ["Bữa chính (Trưa/Tối)", "Ăn vặt / Khuya"]
+            },
+            {
+                id: 44, name: "Dầm Trái Cây Sữa Chua Chanh Leo", emoji: "🥭", price: "25.000đ - 35.000đ",
+                bgGradient: "from-orange-100 to-yellow-100",
+                desc: "Xoài, dâu tây, thanh long dầm sữa chua và nước cốt chanh leo chua ngọt mát lạnh kích thích vị giác.",
+                temp: "Mát lạnh / Nguội", type: "Món nước", taste: "Chua cay / Kích thích",
+                meal: ["Ăn sáng", "Bữa chính (Trưa/Tối)", "Ăn vặt / Khuya"]
+            },
+
+            // --- NHÓM D: MÁT LẠNH / NGUỘI + MÓN KHÔ ---
+            // D1. Mát lạnh / Nguội + Món khô + Đậm đà / Béo ngậy
+            {
+                id: 45, name: "Bún Đậu Mắm Tôm Đầy Đủ", emoji: "🍱", price: "45.000đ - 65.000đ",
+                bgGradient: "from-lime-100 to-emerald-100",
+                desc: "Bún lá nguội ép chặt ăn cùng thịt chân giò luộc, chả cốm, nem chua và mắm tôm đánh bông đậm đà.",
+                temp: "Mát lạnh / Nguội", type: "Món khô", taste: "Đậm đà / Béo ngậy",
+                meal: ["Bữa chính (Trưa/Tối)"]
+            },
+            {
+                id: 46, name: "Bánh Mì Pate Chả Lụa Nguội", emoji: "🥖", price: "20.000đ - 30.000đ",
+                bgGradient: "from-amber-100 to-orange-50",
+                desc: "Bánh mì kẹp pate gan béo ngậy, bơ trứng gà, chả lụa và thịt nguội tiện lợi nhanh gọn cho mọi bữa.",
+                temp: "Mát lạnh / Nguội", type: "Món khô", taste: "Đậm đà / Béo ngậy",
+                meal: ["Ăn sáng", "Bữa chính (Trưa/Tối)", "Ăn vặt / Khuya"]
+            },
+            {
+                id: 47, name: "Cơm Cuộn Kimbap Trứng Cá Ngừ Sốt Mayo", emoji: "🍙", price: "30.000đ - 45.000đ",
+                bgGradient: "from-emerald-100 to-stone-100",
+                desc: "Cơm dẻo cuộn rong biển nhân cá ngừ sốt mayonnaise béo ngậy, trứng chiên, thanh cua và củ cải vàng.",
+                temp: "Mát lạnh / Nguội", type: "Món khô", taste: "Đậm đà / Béo ngậy",
+                meal: ["Ăn sáng", "Bữa chính (Trưa/Tối)", "Ăn vặt / Khuya"]
+            },
+            {
+                id: 48, name: "Bánh Bông Lan Trứng Muối Sốt Phô Mai", emoji: "🧁", price: "30.000đ - 45.000đ",
+                bgGradient: "from-yellow-100 to-orange-100",
+                desc: "Cốt bánh mềm ẩm phủ sốt phô mai béo ngậy, trứng muối bùi thơm và ruốc thịt mặn mà.",
+                temp: "Mát lạnh / Nguội", type: "Món khô", taste: "Đậm đà / Béo ngậy",
+                meal: ["Ăn sáng", "Ăn vặt / Khuya"]
+            },
+
+            // D2. Mát lạnh / Nguội + Món khô + Thanh đạm / Nhẹ bụng
+            {
+                id: 49, name: "Gỏi Cuốn Tôm Thịt Tương Đậu", emoji: "🥗", price: "25.000đ - 40.000đ",
+                bgGradient: "from-emerald-100 to-teal-100",
+                desc: "Bánh tráng cuốn tôm tươi, thịt ba chỉ luộc, bún và rau sống mát lành chấm tương đậu phộng bùi béo.",
+                temp: "Mát lạnh / Nguội", type: "Món khô", taste: "Thanh đạm / Nhẹ bụng",
+                meal: ["Ăn sáng", "Bữa chính (Trưa/Tối)", "Ăn vặt / Khuya"]
+            },
+            {
+                id: 50, name: "Bì Cuốn Rau Thơm Nước Mắm Chua Ngọt", emoji: "🌯", price: "25.000đ - 35.000đ",
+                bgGradient: "from-lime-50 to-emerald-100",
+                desc: "Bì heo trộn thính gạo thơm lừng cuốn cùng xà lách, rau thơm mát rượi, nhẹ bụng mà cực cuốn.",
+                temp: "Mát lạnh / Nguội", type: "Món khô", taste: "Thanh đạm / Nhẹ bụng",
+                meal: ["Ăn sáng", "Bữa chính (Trưa/Tối)", "Ăn vặt / Khuya"]
+            },
+            {
+                id: 51, name: "Salad Ức Gà Sốt Mè Rang Mát Lạnh", emoji: "🥬", price: "40.000đ - 55.000đ",
+                bgGradient: "from-green-100 to-lime-100",
+                desc: "Xà lách giòn mát, cà chua bi, dưa leo và ức gà xé trộn sốt mè rang thơm bùi thanh nhẹ.",
+                temp: "Mát lạnh / Nguội", type: "Món khô", taste: "Thanh đạm / Nhẹ bụng",
+                meal: ["Ăn sáng", "Bữa chính (Trưa/Tối)", "Ăn vặt / Khuya"]
+            },
+
+            // D3. Mát lạnh / Nguội + Món khô + Chua cay / Kích thích
+            {
+                id: 52, name: "Bánh Tráng Trộn Bò Khô Trứng Cút", emoji: "🥡", price: "20.000đ - 30.000đ",
+                bgGradient: "from-orange-100 to-red-100",
+                desc: "Bánh tráng dẻo trộn muối tôm Tây Ninh, xoài xanh bào chua giòn, khô bò, rau răm và quất tươi.",
+                temp: "Mát lạnh / Nguội", type: "Món khô", taste: "Chua cay / Kích thích",
+                meal: ["Ăn sáng", "Bữa chính (Trưa/Tối)", "Ăn vặt / Khuya"]
+            },
+            {
+                id: 53, name: "Nộm Bò Khô Đu Đủ Xanh", emoji: "🥭", price: "25.000đ - 35.000đ",
+                bgGradient: "from-red-100 to-amber-100",
+                desc: "Đu đủ xanh bào sợi giòn tan trộn bò khô xé, lạc rang và nước sốt chua cay mặn ngọt bùng vị.",
+                temp: "Mát lạnh / Nguội", type: "Món khô", taste: "Chua cay / Kích thích",
+                meal: ["Ăn sáng", "Bữa chính (Trưa/Tối)", "Ăn vặt / Khuya"]
+            },
+            {
+                id: 54, name: "Gỏi Ngó Sen Tôm Thịt Chua Cay", emoji: "🦐", price: "45.000đ - 65.000đ",
+                bgGradient: "from-rose-100 to-lime-100",
+                desc: "Ngó sen trắng giòn sần sật trộn tôm thịt, cà rốt, rau răm và nước mắm tỏi ớt chua cay ăn kèm phồng tôm.",
+                temp: "Mát lạnh / Nguội", type: "Món khô", taste: "Chua cay / Kích thích",
+                meal: ["Bữa chính (Trưa/Tối)", "Ăn vặt / Khuya"]
+            }
+        ];
+
+        // Khởi tạo dữ liệu từ LocalStorage (dùng key v2 để cập nhật kho 54 món mới)
+        const STORAGE_KEY = 'homNayAnGi_dishes_v2';
+        let dishes = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [...defaultDishes];
+
+        // Trạng thái bộ lọc ('ALL' nghĩa là chọn Tất cả)
+        let activeFilters = {
+            temp: 'ALL',
+            type: 'ALL',
+            taste: 'ALL',
+            meal: 'ALL'
+        };
+
+        let isSpinning = false; // Trạng thái hiệu ứng quay xổ số
+
+        // =========================================================================
+        // 2. XỬ LÝ TƯƠNG TÁC BỘ LỌC (MỖI NHÓM CÓ NÚT 'TẤT CẢ')
+        // =========================================================================
+        document.querySelectorAll('.filter-chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                const parent = chip.parentElement;
+                const category = parent.getAttribute('data-category');
+                const value = chip.getAttribute('data-value');
+
+                // Nếu bấm lại đúng thẻ đang chọn (và không phải ALL) -> tự động quay về 'ALL'
+                if (activeFilters[category] === value && value !== 'ALL') {
+                    activeFilters[category] = 'ALL';
+                    parent.querySelectorAll('.filter-chip').forEach(c => {
+                        c.getAttribute('data-value') === 'ALL' ? setChipActive(c) : setChipInactive(c);
+                    });
+                } else {
+                    parent.querySelectorAll('.filter-chip').forEach(c => setChipInactive(c));
+                    activeFilters[category] = value;
+                    setChipActive(chip);
+                }
+
+                // Tự động lọc lại danh sách ngay lập tức
+                applyFilters(false);
+            });
+        });
+
+        function setChipActive(chip) {
+            chip.classList.remove('bg-cream-50', 'text-stone-600', 'border-stone-200', 'font-medium');
+            chip.classList.add('bg-brand-500', 'text-white', 'border-brand-500', 'shadow-sm', 'font-semibold');
+        }
+
+        function setChipInactive(chip) {
+            chip.classList.add('bg-cream-50', 'text-stone-600', 'border-stone-200', 'font-medium');
+            chip.classList.remove('bg-brand-500', 'text-white', 'border-brand-500', 'shadow-sm', 'font-semibold');
+        }
+
+        function resetFilters() {
+            activeFilters = { temp: 'ALL', type: 'ALL', taste: 'ALL', meal: 'ALL' };
+            document.querySelectorAll('#filter-groups [data-category]').forEach(group => {
+                group.querySelectorAll('.filter-chip').forEach(chip => {
+                    chip.getAttribute('data-value') === 'ALL' ? setChipActive(chip) : setChipInactive(chip);
+                });
+            });
+            closeSpotlight();
+            applyFilters(false);
+            showToast("Đã xóa toàn bộ bộ lọc!", "info");
+        }
+
+        // =========================================================================
+        // 3. LỌC MÓN ĂN & GỢI Ý GẦN NHẤT (3/4 TIÊU CHÍ)
+        // =========================================================================
+        function checkMatchCount(dish) {
+            let score = 0;
+            let totalActive = 0;
+
+            if (activeFilters.temp !== 'ALL') {
+                totalActive++;
+                if (dish.temp === activeFilters.temp) score++;
+            }
+            if (activeFilters.type !== 'ALL') {
+                totalActive++;
+                if (dish.type === activeFilters.type) score++;
+            }
+            if (activeFilters.taste !== 'ALL') {
+                totalActive++;
+                if (dish.taste === activeFilters.taste) score++;
+            }
+            if (activeFilters.meal !== 'ALL') {
+                totalActive++;
+                if (dish.meal.includes(activeFilters.meal)) score++;
+            }
+
+            return { score, totalActive };
+        }
+
+        function getFilteredDishes() {
+            return dishes.filter(dish => {
+                const { score, totalActive } = checkMatchCount(dish);
+                return score === totalActive;
+            });
+        }
+
+        function getNearMatchDishes(exactIds) {
+            // Tìm các món khớp (totalActive - 1) tiêu chí nếu đang lọc từ 2 tiêu chí trở lên
+            return dishes.filter(dish => {
+                if (exactIds.has(dish.id)) return false;
+                const { score, totalActive } = checkMatchCount(dish);
+                return totalActive >= 2 && score === totalActive - 1;
+            }).slice(0, 6);
+        }
+
+        function applyFilters(scrollToResult = true) {
+            const exactMatches = getFilteredDishes();
+            renderDishes(exactMatches, 'dish-grid');
+            updateResultHeader(exactMatches.length);
+
+            // Xử lý mục Gợi ý gần nhất nếu kết quả khớp < 2 món
+            const nearSection = document.getElementById('near-match-section');
+            if (exactMatches.length < 2) {
+                const exactIds = new Set(exactMatches.map(d => d.id));
+                const nearMatches = getNearMatchDishes(exactIds);
+                if (nearMatches.length > 0) {
+                    renderDishes(nearMatches, 'near-match-grid');
+                    nearSection.classList.remove('hidden');
+                } else {
+                    nearSection.classList.add('hidden');
+                }
+            } else {
+                nearSection.classList.add('hidden');
+            }
+
+            if (scrollToResult) {
+                document.getElementById('dish-count-text').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
+        function updateResultHeader(count) {
+            document.getElementById('dish-count-text').textContent = `Tìm thấy ${count} món phù hợp`;
+
+            const activeParts = [];
+            if (activeFilters.temp !== 'ALL') activeParts.push(activeFilters.temp);
+            if (activeFilters.type !== 'ALL') activeParts.push(activeFilters.type);
+            if (activeFilters.taste !== 'ALL') activeParts.push(activeFilters.taste);
+            if (activeFilters.meal !== 'ALL') activeParts.push(activeFilters.meal);
+
+            const summaryEl = document.getElementById('active-filter-summary');
+            if (activeParts.length === 0) {
+                summaryEl.textContent = "Đang hiển thị toàn bộ thực đơn";
+            } else {
+                summaryEl.textContent = `Tiêu chí: ${activeParts.join(' • ')}`;
+            }
+        }
+
+        function renderDishes(list, containerId) {
+            const grid = document.getElementById(containerId);
+            grid.innerHTML = '';
+
+            list.forEach((dish, index) => {
+                const card = document.createElement('article');
+                card.id = `dish-card-${dish.id}`;
+                card.className = "bg-white rounded-3xl overflow-hidden border border-orange-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col animate-fade-in";
+                card.style.animationDelay = `${Math.min(index * 30, 250)}ms`;
+
+                const tagsHtml = [
+                    `<span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-orange-50 text-brand-700">${dish.temp === 'Nóng hổi' ? '🔥 Nóng hổi' : '❄️ Mát lạnh'}</span>`,
+                    `<span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-amber-50 text-amber-800">${dish.type === 'Món nước' ? '🍜 Món nước' : '🍛 Món khô'}</span>`,
+                    `<span class="px-2.5 py-1 rounded-lg text-xs font-medium bg-stone-100 text-stone-600">${dish.taste}</span>`,
+                    ...dish.meal.map(m => `<span class="px-2.5 py-1 rounded-lg text-xs font-medium bg-emerald-50 text-emerald-700">${m}</span>`)
+                ].join('');
+
+                card.innerHTML = `
+                    <!-- Header thẻ: Emoji & Giá tham khảo -->
+                    <div class="h-32 bg-gradient-to-br ${dish.bgGradient || 'from-orange-100 to-amber-100'} flex items-center justify-center relative group">
+                        <span class="text-6xl drop-shadow-sm group-hover:scale-110 transition-transform duration-300 select-none">${dish.emoji}</span>
+                        
+                        <!-- Nhãn giá tham khảo -->
+                        <span class="absolute bottom-2.5 left-3 bg-white/90 backdrop-blur-xs text-stone-700 text-xs font-bold px-2.5 py-1 rounded-full shadow-xs border border-orange-100">
+                            💰 ${dish.price || '30.000đ - 50.000đ'}
+                        </span>
+
+                        ${dish.isCustom ? `
+                            <button onclick="deleteDish(${dish.id})" title="Xóa món này" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/85 hover:bg-red-500 text-stone-500 hover:text-white flex items-center justify-center transition-colors shadow-sm cursor-pointer">
+                                <i class="fa-solid fa-trash-can text-xs"></i>
+                            </button>
+                        ` : ''}
+                    </div>
+
+                    <!-- Nội dung chi tiết -->
+                    <div class="p-5 flex-grow flex flex-col justify-between space-y-4">
+                        <div>
+                            <h3 class="text-lg font-extrabold text-stone-800 mb-1.5 leading-snug">${dish.name}</h3>
+                            <p class="text-sm text-stone-500 leading-relaxed line-clamp-3">${dish.desc}</p>
+                        </div>
+                        <div class="flex flex-wrap gap-1.5 pt-2.5 border-t border-orange-50">
+                            ${tagsHtml}
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // =========================================================================
+        // 4. HIỆU ỨNG QUAY XỔ SỐ CHỌN NGẪU NHIÊN 1 MÓN & HIGHLIGHT THẺ
+        // =========================================================================
+        function pickRandomDish() {
+            if (isSpinning) return;
+
+            let pool = getFilteredDishes();
+            if (pool.length === 0) {
+                pool = dishes; // Fallback toàn bộ nếu người dùng tạo tổ hợp rỗng
+            }
+
+            isSpinning = true;
+            const btnRandom = document.getElementById('btn-random');
+            btnRandom.classList.add('opacity-75', 'cursor-not-allowed');
+
+            // Xóa highlight cũ trên lưới
+            document.querySelectorAll('#dish-grid article').forEach(el => {
+                el.classList.remove('ring-4', 'ring-brand-500', 'bg-orange-50/40');
+            });
+
+            const spotlightSection = document.getElementById('spotlight-section');
+            const spotlightContent = document.getElementById('spotlight-content');
+            const spotlightBadge = document.getElementById('spotlight-badge');
+
+            spotlightSection.classList.remove('hidden');
+            spotlightBadge.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-amber-200"></i> Đang quay xổ số chọn món...`;
+
+            let ticks = 0;
+            const maxTicks = 14;
+            const interval = setInterval(() => {
+                const tempDish = pool[Math.floor(Math.random() * pool.length)];
+                spotlightContent.innerHTML = `
+                    <div class="w-24 h-24 sm:w-32 sm:h-32 rounded-3xl bg-white shadow-md flex items-center justify-center text-5xl sm:text-6xl shrink-0 select-none">
+                        ${tempDish.emoji}
+                    </div>
+                    <div class="text-center sm:text-left space-y-2 flex-grow">
+                        <h3 class="text-xl sm:text-2xl font-extrabold text-stone-700">${tempDish.name}</h3>
+                        <p class="text-stone-400 text-sm">Đang tìm chân ái hợp gu bạn nhất...</p>
+                    </div>
+                `;
+                ticks++;
+
+                if (ticks >= maxTicks) {
+                    clearInterval(interval);
+                    isSpinning = false;
+                    btnRandom.classList.remove('opacity-75', 'cursor-not-allowed');
+
+                    const chosen = pool[Math.floor(Math.random() * pool.length)];
+                    renderChosenSpotlight(chosen);
+                }
+            }, 65);
+
+            spotlightSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function renderChosenSpotlight(chosen) {
+            const spotlightBadge = document.getElementById('spotlight-badge');
+            const spotlightContent = document.getElementById('spotlight-content');
+
+            spotlightBadge.innerHTML = `<i class="fa-solid fa-crown text-amber-200"></i> Chân ái hôm nay của bạn`;
+
+            const tagsHtml = [
+                `<span class="px-3 py-1 rounded-full text-xs font-bold bg-white text-brand-600 shadow-xs">💰 ${chosen.price}</span>`,
+                `<span class="px-3 py-1 rounded-full text-xs font-bold bg-white text-stone-700 shadow-xs">${chosen.temp === 'Nóng hổi' ? '🔥 Nóng hổi' : '❄️ Mát lạnh'}</span>`,
+                `<span class="px-3 py-1 rounded-full text-xs font-bold bg-white text-amber-700 shadow-xs">${chosen.type}</span>`,
+                `<span class="px-3 py-1 rounded-full text-xs font-semibold bg-white/80 text-stone-700">${chosen.taste}</span>`
+            ].join('');
+
+            spotlightContent.innerHTML = `
+                <div class="w-28 h-28 sm:w-36 sm:h-36 rounded-3xl bg-white shadow-md flex items-center justify-center text-6xl sm:text-7xl shrink-0 animate-bounce-slow select-none">
+                    ${chosen.emoji}
+                </div>
+                <div class="text-center sm:text-left space-y-3 flex-grow">
+                    <h3 class="text-2xl sm:text-3xl font-extrabold text-stone-900">${chosen.name}</h3>
+                    <p class="text-stone-600 text-sm sm:text-base leading-relaxed">${chosen.desc}</p>
+                    <div class="flex flex-wrap justify-center sm:justify-start gap-2 pt-1">
+                        ${tagsHtml}
+                    </div>
+                    <div class="pt-2 flex flex-wrap justify-center sm:justify-start gap-2">
+                        <button onclick="pickRandomDish()" class="inline-flex items-center gap-2 text-sm font-bold text-brand-600 hover:text-brand-700 bg-white hover:bg-orange-50 px-4 py-2 rounded-xl shadow-xs border border-orange-200 transition-all cursor-pointer">
+                            <i class="fa-solid fa-shuffle"></i> Quay lại món khác
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            // Highlight thẻ món ăn tương ứng trong danh sách bên dưới
+            const targetCard = document.getElementById(`dish-card-${chosen.id}`);
+            if (targetCard) {
+                targetCard.classList.add('ring-4', 'ring-brand-500', 'bg-orange-50/40');
+            }
+        }
+
+        function closeSpotlight() {
+            document.getElementById('spotlight-section').classList.add('hidden');
+            document.querySelectorAll('#dish-grid article').forEach(el => {
+                el.classList.remove('ring-4', 'ring-brand-500', 'bg-orange-50/40');
+            });
+        }
+
+        // =========================================================================
+        // 5. THÊM MÓN MỚI, LƯU LOCALSTORAGE & KHÔI PHỤC MẶC ĐỊNH
+        // =========================================================================
+        function checkCustomDishesExist() {
+            const hasCustom = dishes.some(d => d.isCustom);
+            const btnResetData = document.getElementById('btn-reset-data');
+            if (hasCustom) {
+                btnResetData.classList.remove('hidden');
+            } else {
+                btnResetData.classList.add('hidden');
+            }
+        }
+
+        function resetDefaultData() {
+            dishes = [...defaultDishes];
+            localStorage.removeItem(STORAGE_KEY);
+            checkCustomDishesExist();
+            applyFilters(false);
+            showToast("Đã khôi phục thực đơn 54 món mặc định!", "info");
+        }
+
+        function openAddModal() {
+            const modal = document.getElementById('add-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeAddModal() {
+            const modal = document.getElementById('add-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function handleAddDish(e) {
+            e.preventDefault();
+
+            const emoji = document.getElementById('new-emoji').value.trim() || '🍽️';
+            const name = document.getElementById('new-name').value.trim();
+            const price = document.getElementById('new-price').value.trim() || '35.000đ - 50.000đ';
+            const desc = document.getElementById('new-desc').value.trim();
+            const temp = document.getElementById('new-temp').value;
+            const type = document.getElementById('new-type').value;
+            const taste = document.getElementById('new-taste').value;
+
+            const mealCheckboxes = document.querySelectorAll('input[name="new-meal"]:checked');
+            const meal = Array.from(mealCheckboxes).map(cb => cb.value);
+
+            if (meal.length === 0) {
+                showToast("Vui lòng chọn ít nhất 1 thời điểm bữa ăn!", "error");
+                return;
+            }
+
+            const gradients = [
+                "from-orange-100 to-amber-100",
+                "from-yellow-100 to-orange-100",
+                "from-emerald-100 to-teal-100",
+                "from-rose-100 to-orange-100"
+            ];
+
+            const newDish = {
+                id: Date.now(),
+                name,
+                emoji,
+                price,
+                bgGradient: gradients[Math.floor(Math.random() * gradients.length)],
+                desc,
+                temp,
+                type,
+                taste,
+                meal,
+                isCustom: true
+            };
+
+            dishes.unshift(newDish);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(dishes));
+            checkCustomDishesExist();
+
+            document.getElementById('add-dish-form').reset();
+            closeAddModal();
+            applyFilters(false);
+            showToast(`Đã thêm "${name}" vào thực đơn!`, "success");
+        }
+
+        function deleteDish(id) {
+            dishes = dishes.filter(d => d.id !== id);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(dishes));
+            checkCustomDishesExist();
+            applyFilters(false);
+            showToast("Đã xóa món ăn tự thêm.", "info");
+        }
+
+        // =========================================================================
+        // 6. THÔNG BÁO TOAST & KHỞI CHẠY
+        // =========================================================================
+        function showToast(message, type = "success") {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            const colors = {
+                success: "bg-emerald-600 text-white",
+                error: "bg-red-500 text-white",
+                info: "bg-stone-800 text-white"
+            };
+            const icons = {
+                success: "fa-circle-check",
+                error: "fa-circle-exclamation",
+                info: "fa-circle-info"
+            };
+
+            toast.className = `${colors[type]} px-4 py-3 rounded-2xl shadow-lg flex items-center gap-2.5 text-sm font-medium animate-fade-in pointer-events-auto`;
+            toast.innerHTML = `<i class="fa-solid ${icons[type]}"></i><span>${message}</span>`;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(-10px)';
+                toast.style.transition = 'all 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        document.getElementById('add-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'add-modal') closeAddModal();
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            checkCustomDishesExist();
+            applyFilters(false);
+        });
+    </script>
+</body>
+</html>
