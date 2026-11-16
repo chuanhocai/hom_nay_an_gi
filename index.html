@@ -74,3 +74,922 @@
       font-weight: 600;
       transition: all 0.18s ease;
     }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), #ea580c);
+      color: #fff;
+      padding: 12px 20px;
+      font-size: 0.98rem;
+      box-shadow: 0 4px 14px rgba(249, 115, 22, 0.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(249, 115, 22, 0.5);
+    }
+
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 10px 16px;
+      font-size: 0.9rem;
+    }
+
+    .btn-secondary:hover {
+      background: var(--surface-hover);
+      border-color: var(--primary);
+    }
+
+    /* Filter Panel */
+    .filter-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+
+    .search-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .search-input {
+      flex: 1;
+      min-width: 220px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 11px 16px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    .search-input:focus {
+      border-color: var(--primary);
+    }
+
+    .filter-group {
+      margin-bottom: 14px;
+    }
+
+    .filter-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .filter-label {
+      display: block;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      background: var(--bg);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      padding: 7px 14px;
+      border-radius: 999px;
+      font-size: 0.86rem;
+      font-weight: 500;
+    }
+
+    .chip:hover {
+      border-color: var(--primary);
+      color: var(--text);
+    }
+
+    .chip.active {
+      background: var(--primary-soft);
+      color: #fdba74;
+      border-color: var(--primary);
+      font-weight: 600;
+    }
+
+    /* Random Spotlight */
+    .spotlight {
+      display: none;
+      background: linear-gradient(135deg, rgba(249, 115, 22, 0.18), rgba(251, 191, 36, 0.1));
+      border: 2px solid var(--primary);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 24px;
+      text-align: center;
+      animation: popIn 0.3s ease;
+    }
+
+    .spotlight.show { display: block; }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.97); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .spotlight-badge {
+      display: inline-block;
+      background: var(--primary);
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .spotlight h2 {
+      font-size: 1.65rem;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .spotlight p {
+      color: #fed7aa;
+      font-size: 0.95rem;
+      margin-bottom: 12px;
+    }
+
+    /* Results Header */
+    .results-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .results-count {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    .results-count strong {
+      color: var(--accent);
+    }
+
+    .fallback-note {
+      background: rgba(251, 191, 36, 0.12);
+      border: 1px solid rgba(251, 191, 36, 0.4);
+      color: #fde68a;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      margin-bottom: 16px;
+    }
+
+    /* Food Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.18s ease, border-color 0.18s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: #57463a;
+    }
+
+    .card.picked {
+      border: 2px solid var(--accent);
+      box-shadow: 0 0 20px rgba(251, 191, 36, 0.25);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .card-emoji {
+      font-size: 2.1rem;
+      line-height: 1;
+    }
+
+    .card-price {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--accent);
+      background: rgba(251, 191, 36, 0.12);
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+
+    .card-cat {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    .card-title {
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: auto;
+    }
+
+    .tag {
+      font-size: 0.74rem;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: var(--bg);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.72);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-backdrop.open { display: flex; }
+
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      width: 100%;
+      max-width: 460px;
+      padding: 22px;
+    }
+
+    .modal h3 {
+      margin-bottom: 14px;
+      font-size: 1.2rem;
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      margin-bottom: 5px;
+    }
+
+    .form-group input, .form-group select {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 9px 12px;
+      border-radius: 8px;
+      font-size: 0.92rem;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    @media (max-width: 600px) {
+      .brand h1 { font-size: 1.5rem; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <h1>🍜 Hôm Nay Ăn Gì?</h1>
+        <p>Kho 200 món ngon Việt & Quốc tế — Lọc theo sở thích hoặc quay ngẫu nhiên</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn-secondary" id="btnReset">↺ Đặt lại bộ lọc</button>
+        <button class="btn-secondary" id="btnOpenModal">+ Thêm món mới</button>
+        <button class="btn-primary" id="btnRandom">🎲 Chọn ngẫu nhiên 1 món!</button>
+      </div>
+    </header>
+
+    <section class="filter-panel">
+      <div class="search-bar">
+        <input type="text" id="searchInput" class="search-input" placeholder="🔍 Tìm nhanh tên món (ví dụ: bún bò, cơm tấm, lẩu thái, gà rán...)" />
+      </div>
+
+      <div class="filter-group">
+        <span class="filter-label">1. Nhóm danh mục</span>
+        <div class="chips" data-filter="cat">
+          <button class="chip active" data-val="all">Tất cả (200)</button>
+          <button class="chip" data-val="com">Cơm & Món Mặn</button>
+          <button class="chip" data-val="soi">Phở – Bún – Miến – Mì</button>
+          <button class="chip" data-val="sang">Bánh Mì – Xôi – Cháo</button>
+          <button class="chip" data-val="cuon">Món Cuốn & Bánh Mặn</button>
+          <button class="chip" data-val="au-a">Món Âu – Á & Fast Food</button>
+          <button class="chip" data-val="an-vat">Ăn Vặt Đường Phố</button>
+          <button class="chip" data-val="lau-nuong">Lẩu – Nướng – Nhậu</button>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <span class="filter-label">2. Nhiệt độ món</span>
+        <div class="chips" data-filter="temp">
+          <button class="chip active" data-val="all">Tất cả</button>
+          <button class="chip" data-val="nong">🔥 Nóng hổi</button>
+          <button class="chip" data-val="nguoi">🌤️ Nguội / Vừa ăn</button>
+          <button class="chip" data-val="lanh">❄️ Mát lạnh</button>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <span class="filter-label">3. Hình thức món</span>
+        <div class="chips" data-filter="type">
+          <button class="chip active" data-val="all">Tất cả</button>
+          <button class="chip" data-val="nuoc">🍜 Món nước / Có canh</button>
+          <button class="chip" data-val="kho">🍛 Món khô / Trộn / Chiên nướng</button>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <span class="filter-label">4. Khẩu vị</span>
+        <div class="chips" data-filter="taste">
+          <button class="chip active" data-val="all">Tất cả</button>
+          <button class="chip" data-val="dam-da">🍖 Đậm đà / Béo ngậy</button>
+          <button class="chip" data-val="thanh-dam">🥬 Thanh đạm / Nhẹ bụng</button>
+          <button class="chip" data-val="chua-cay">🌶️ Chua cay / Kích thích</button>
+          <button class="chip" data-val="ngot">🍯 Ngọt / Tráng miệng</button>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <span class="filter-label">5. Thời điểm bữa ăn</span>
+        <div class="chips" data-filter="meal">
+          <button class="chip active" data-val="all">Tất cả</button>
+          <button class="chip" data-val="sang">🌅 Bữa sáng</button>
+          <button class="chip" data-val="chinh">☀️ Bữa chính (Trưa / Tối)</button>
+          <button class="chip" data-val="vat">🌙 Ăn vặt / Khuya / Tụ tập</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="spotlight" id="spotlight">
+      <span class="spotlight-badge">✨ Gợi ý chốt đơn hôm nay</span>
+      <h2 id="spotTitle">Phở bò tái chín</h2>
+      <p id="spotMeta">Phở – Bún – Miến – Mì • 45.000đ - 65.000đ</p>
+      <button class="btn-secondary" id="btnReroll">🔄 Quay món khác</button>
+    </div>
+
+    <div class="results-header">
+      <div class="results-count" id="resultsCount">Hiển thị <strong>200</strong> món ăn phù hợp</div>
+    </div>
+    <div class="fallback-note" id="fallbackNote" style="display:none;">
+      💡 Không có món nào khớp 100% cả 5 tiêu chí cùng lúc — hệ thống đang hiển thị các món <strong>gần tiêu chí nhất</strong> để bạn chọn!
+    </div>
+
+    <main class="grid" id="foodGrid"></main>
+  </div>
+
+  <!-- Modal Thêm Món -->
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal">
+      <h3>➕ Thêm món ăn của bạn</h3>
+      <div class="form-group">
+        <label>Tên món ăn *</label>
+        <input type="text" id="newName" placeholder="Ví dụ: Bún đậu mẹt tá lả" />
+      </div>
+      <div class="form-group">
+        <label>Nhóm danh mục</label>
+        <select id="newCat">
+          <option value="com">Cơm & Món Mặn</option>
+          <option value="soi">Phở – Bún – Miến – Mì</option>
+          <option value="sang">Bánh Mì – Xôi – Cháo</option>
+          <option value="cuon">Món Cuốn & Bánh Mặn</option>
+          <option value="au-a">Món Âu – Á & Fast Food</option>
+          <option value="an-vat">Ăn Vặt Đường Phố</option>
+          <option value="lau-nuong">Lẩu – Nướng – Nhậu</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Nhiệt độ</label>
+        <select id="newTemp">
+          <option value="nong">Nóng hổi</option>
+          <option value="nguoi">Nguội / Vừa ăn</option>
+          <option value="lanh">Mát lạnh</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Hình thức</label>
+        <select id="newType">
+          <option value="kho">Món khô / Trộn / Chiên nướng</option>
+          <option value="nuoc">Món nước / Có canh</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Khẩu vị</label>
+        <select id="newTaste">
+          <option value="dam-da">Đậm đà / Béo ngậy</option>
+          <option value="thanh-dam">Thanh đạm / Nhẹ bụng</option>
+          <option value="chua-cay">Chua cay / Kích thích</option>
+          <option value="ngot">Ngọt / Tráng miệng</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Bữa ăn phù hợp</label>
+        <select id="newMeal">
+          <option value="chinh">Bữa chính (Trưa / Tối)</option>
+          <option value="sang">Bữa sáng</option>
+          <option value="vat">Ăn vặt / Khuya / Tụ tập</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Khoảng giá tham khảo</label>
+        <input type="text" id="newPrice" value="35.000đ - 55.000đ" />
+      </div>
+      <div class="modal-actions">
+        <button class="btn-secondary" id="btnCloseModal">Hủy</button>
+        <button class="btn-primary" id="btnSaveFood">Lưu món ăn</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const CAT_LABELS = {
+      "com": "Cơm & Món Mặn",
+      "soi": "Phở – Bún – Miến – Mì",
+      "sang": "Bánh Mì – Xôi – Cháo",
+      "cuon": "Món Cuốn & Bánh Mặn",
+      "au-a": "Món Âu – Á & Fast Food",
+      "an-vat": "Ăn Vặt Đường Phố",
+      "lau-nuong": "Lẩu – Nướng – Nhậu"
+    };
+
+    const LABELS = {
+      nong: "🔥 Nóng hổi",
+      nguoi: "🌤️ Vừa ăn",
+      lanh: "❄️ Mát lạnh",
+      nuoc: "🍜 Món nước",
+      kho: "🍛 Món khô",
+      "dam-da": "Đậm đà",
+      "thanh-dam": "Thanh đạm",
+      "chua-cay": "Chua cay",
+      ngot: "Vị ngọt",
+      sang: "Bữa sáng",
+      chinh: "Bữa chính",
+      vat: "Ăn vặt / Tụ tập"
+    };
+
+    // Kho 200 món ăn theo đúng 7 nhóm của bạn
+    // Format: [Tên món, cat, temp, type, taste, meal, price, emoji]
+    const RAW_FOODS = [
+      // 1. Cơm & Món Mặn Gia Đình (40 món)
+      ["Cơm tấm sườn bì chả", "com", "nong", "kho", "dam-da", "sang", "40.000đ - 60.000đ", "🍛"],
+      ["Cơm tấm sườn non nướng mật ong", "com", "nong", "kho", "dam-da", "chinh", "45.000đ - 65.000đ", "🍖"],
+      ["Cơm gà xối mỡ da giòn", "com", "nong", "kho", "dam-da", "chinh", "40.000đ - 55.000đ", "🍗"],
+      ["Cơm gà Hải Nam", "com", "nguoi", "kho", "thanh-dam", "chinh", "45.000đ - 65.000đ", "🍚"],
+      ["Cơm gà nướng tiêu đen", "com", "nong", "kho", "dam-da", "chinh", "40.000đ - 55.000đ", "🍗"],
+      ["Cơm gà sốt Teriyaki", "com", "nong", "kho", "ngot", "chinh", "45.000đ - 60.000đ", "🍱"],
+      ["Cơm rang dưa bò", "com", "nong", "kho", "chua-cay", "chinh", "35.000đ - 50.000đ", "🍳"],
+      ["Cơm rang thập cẩm", "com", "nong", "kho", "dam-da", "chinh", "35.000đ - 45.000đ", "🍚"],
+      ["Cơm rang hải sản", "com", "nong", "kho", "dam-da", "chinh", "45.000đ - 60.000đ", "🦐"],
+      ["Cơm chiên Dương Châu", "com", "nong", "kho", "thanh-dam", "chinh", "35.000đ - 50.000đ", "🍚"],
+      ["Cơm chiên cá mặn gà xé", "com", "nong", "kho", "dam-da", "chinh", "45.000đ - 60.000đ", "🐟"],
+      ["Cơm chiên kim chi bò Mỹ", "com", "nong", "kho", "chua-cay", "chinh", "45.000đ - 65.000đ", "🌶️"],
+      ["Cơm chiên tỏi trứng", "com", "nong", "kho", "thanh-dam", "sang", "25.000đ - 35.000đ", "🍳"],
+      ["Cơm thố bò xào hành tây", "com", "nong", "kho", "dam-da", "chinh", "45.000đ - 60.000đ", "🍲"],
+      ["Cơm thố gà quay xá xíu", "com", "nong", "kho", "dam-da", "chinh", "45.000đ - 60.000đ", "🍖"],
+      ["Cơm niêu cá bống kho tộ", "com", "nong", "kho", "dam-da", "chinh", "55.000đ - 80.000đ", "🐟"],
+      ["Cơm niêu sườn non ram mặn", "com", "nong", "kho", "dam-da", "chinh", "55.000đ - 75.000đ", "🍖"],
+      ["Cơm thịt kho tàu trứng vịt", "com", "nong", "kho", "dam-da", "chinh", "35.000đ - 50.000đ", "🥚"],
+      ["Cơm ba chỉ rang cháy cạnh", "com", "nong", "kho", "dam-da", "chinh", "35.000đ - 50.000đ", "🥓"],
+      ["Cơm sườn xào chua ngọt", "com", "nong", "kho", "chua-cay", "chinh", "40.000đ - 55.000đ", "🍖"],
+      ["Cơm thịt luộc cà pháo mắm tôm", "com", "nguoi", "kho", "dam-da", "chinh", "35.000đ - 50.000đ", "🥩"],
+      ["Cơm đậu phụ nhồi thịt sốt cà chua", "com", "nong", "kho", "thanh-dam", "chinh", "30.000đ - 45.000đ", "🍅"],
+      ["Cơm cá thu sốt cà chua", "com", "nong", "kho", "dam-da", "chinh", "40.000đ - 55.000đ", "🐟"],
+      ["Cơm cá nục kho riềng tiêu", "com", "nong", "kho", "dam-da", "chinh", "35.000đ - 50.000đ", "🐟"],
+      ["Cơm tôm rim thịt ba chỉ", "com", "nong", "kho", "dam-da", "chinh", "40.000đ - 55.000đ", "🦐"],
+      ["Cơm bò lúc lắc khoai tây chiên", "com", "nong", "kho", "dam-da", "chinh", "55.000đ - 75.000đ", "🥩"],
+      ["Cơm bò xào hoa thiên lý", "com", "nong", "kho", "thanh-dam", "chinh", "45.000đ - 60.000đ", "🥬"],
+      ["Cơm mực xào cần tỏi", "com", "nong", "kho", "thanh-dam", "chinh", "45.000đ - 65.000đ", "🦑"],
+      ["Cơm trứng đúc thịt băm", "com", "nong", "kho", "thanh-dam", "chinh", "30.000đ - 40.000đ", "🍳"],
+      ["Cơm chả lá lốt nướng", "com", "nong", "kho", "dam-da", "chinh", "35.000đ - 45.000đ", "🌿"],
+      ["Cơm nem rán Hà Nội", "com", "nong", "kho", "dam-da", "chinh", "35.000đ - 50.000đ", "🥢"],
+      ["Cơm canh cua rau đay cà pháo", "com", "nguoi", "nuoc", "thanh-dam", "chinh", "35.000đ - 50.000đ", "🦀"],
+      ["Cơm hến Huế", "com", "nguoi", "kho", "chua-cay", "sang", "25.000đ - 35.000đ", "🐚"],
+      ["Cơm lam gà nướng Tây Nguyên", "com", "nong", "kho", "dam-da", "chinh", "60.000đ - 90.000đ", "🍗"],
+      ["Cơm vịt quay Bắc Kinh", "com", "nong", "kho", "dam-da", "chinh", "50.000đ - 75.000đ", "🦆"],
+      ["Cơm trộn Hàn Quốc (Bibimbap)", "com", "nong", "kho", "chua-cay", "chinh", "50.000đ - 70.000đ", "🍲"],
+      ["Cơm thịt heo chiên xù Nhật (Katsudon)", "com", "nong", "kho", "dam-da", "chinh", "55.000đ - 75.000đ", "🍱"],
+      ["Cơm bò hầm hành tây Nhật (Gyudon)", "com", "nong", "kho", "ngot", "chinh", "55.000đ - 75.000đ", "🥩"],
+      ["Cơm cà ri gà Nhật Bản", "com", "nong", "kho", "dam-da", "chinh", "55.000đ - 75.000đ", "🍛"],
+      ["Cơm chay thập cẩm", "com", "nguoi", "kho", "thanh-dam", "chinh", "25.000đ - 40.000đ", "🥗"],
+
+      // 2. Phở – Bún – Miến – Mì – Bánh Canh (45 món)
+      ["Phở bò tái chín", "soi", "nong", "nuoc", "thanh-dam", "sang", "45.000đ - 65.000đ", "🍜"],
+      ["Phở bò sốt vang", "soi", "nong", "nuoc", "dam-da", "sang", "50.000đ - 70.000đ", "🍲"],
+      ["Phở gà ta chặt", "soi", "nong", "nuoc", "thanh-dam", "sang", "45.000đ - 65.000đ", "🍗"],
+      ["Phở trộn chua ngọt", "soi", "nguoi", "kho", "chua-cay", "chinh", "40.000đ - 55.000đ", "🥢"],
+      ["Phở xào giòn thịt bò", "soi", "nong", "kho", "dam-da", "chinh", "50.000đ - 65.000đ", "🥩"],
+      ["Phở chua Lạng Sơn", "soi", "nguoi", "kho", "chua-cay", "chinh", "40.000đ - 55.000đ", "🍜"],
+      ["Phở cuốn Ngũ Xã", "soi", "nguoi", "kho", "thanh-dam", "vat", "40.000đ - 60.000đ", "🌯"],
+      ["Bún chả Hà Nội", "soi", "nong", "kho", "dam-da", "chinh", "40.000đ - 55.000đ", "🍖"],
+      ["Bún đậu mắm tôm đầy đủ", "soi", "nguoi", "kho", "dam-da", "chinh", "45.000đ - 70.000đ", "🥢"],
+      ["Bún bò Huế", "soi", "nong", "nuoc", "chua-cay", "sang", "45.000đ - 65.000đ", "🌶️"],
+      ["Bún riêu cua bắp bò sườn sụn", "soi", "nong", "nuoc", "chua-cay", "sang", "40.000đ - 60.000đ", "🍅"],
+      ["Bún cá chấm / bún cá nước", "soi", "nong", "nuoc", "thanh-dam", "chinh", "35.000đ - 50.000đ", "🐟"],
+      ["Bún cá rô đồng", "soi", "nong", "nuoc", "thanh-dam", "sang", "35.000đ - 45.000đ", "🐟"],
+      ["Bún ngan trộn măng tiết", "soi", "nguoi", "kho", "chua-cay", "chinh", "40.000đ - 55.000đ", "🦆"],
+      ["Bún thang Hà Nội", "soi", "nong", "nuoc", "thanh-dam", "sang", "45.000đ - 60.000đ", "🍜"],
+      ["Bún mọc dọc mùng", "soi", "nong", "nuoc", "thanh-dam", "sang", "35.000đ - 50.000đ", "🥣"],
+      ["Bún ốc chuối đậu", "soi", "nong", "nuoc", "chua-cay", "chinh", "40.000đ - 55.000đ", "🐚"],
+      ["Bún thịt nướng Nam Bộ", "soi", "nguoi", "kho", "dam-da", "chinh", "35.000đ - 50.000đ", "🍖"],
+      ["Bún bò Nam Bộ", "soi", "nguoi", "kho", "chua-cay", "chinh", "40.000đ - 55.000đ", "🥩"],
+      ["Bún mắm miền Tây", "soi", "nong", "nuoc", "dam-da", "chinh", "55.000đ - 75.000đ", "🦐"],
+      ["Bún suông Trà Vinh", "soi", "nong", "nuoc", "dam-da", "sang", "40.000đ - 55.000đ", "🍜"],
+      ["Bún nước lèo Sóc Trăng", "soi", "nong", "nuoc", "dam-da", "sang", "40.000đ - 55.000đ", "🐟"],
+      ["Bún sứa Nha Trang", "soi", "nong", "nuoc", "thanh-dam", "sang", "40.000đ - 55.000đ", "🪼"],
+      ["Bún chả cá Quy Nhơn", "soi", "nong", "nuoc", "thanh-dam", "sang", "35.000đ - 50.000đ", "🐟"],
+      ["Bún giả cầy", "soi", "nong", "nuoc", "dam-da", "chinh", "40.000đ - 55.000đ", "🍲"],
+      ["Miến lươn trộn giòn / lươn mềm", "soi", "nguoi", "kho", "dam-da", "chinh", "45.000đ - 65.000đ", "🥢"],
+      ["Miến ngan măng cay", "soi", "nong", "nuoc", "chua-cay", "chinh", "40.000đ - 55.000đ", "🦆"],
+      ["Miến gà trộn xì dầu", "soi", "nguoi", "kho", "thanh-dam", "chinh", "40.000đ - 55.000đ", "🍗"],
+      ["Miến xào cua bể", "soi", "nong", "kho", "dam-da", "chinh", "65.000đ - 95.000đ", "🦀"],
+      ["Miến trộn Hàn Quốc (Japchae)", "soi", "nguoi", "kho", "ngot", "chinh", "45.000đ - 65.000đ", "🍝"],
+      ["Mì vằn thắn xá xíu", "soi", "nong", "nuoc", "thanh-dam", "sang", "45.000đ - 60.000đ", "🥟"],
+      ["Mì vịt tiềm", "soi", "nong", "nuoc", "dam-da", "chinh", "65.000đ - 90.000đ", "🦆"],
+      ["Mì Quảng tôm thịt trứng cút", "soi", "nong", "nuoc", "dam-da", "sang", "40.000đ - 55.000đ", "🍜"],
+      ["Mì Quảng ếch", "soi", "nong", "nuoc", "chua-cay", "chinh", "45.000đ - 60.000đ", "🐸"],
+      ["Cao lầu Hội An", "soi", "nguoi", "kho", "dam-da", "chinh", "40.000đ - 55.000đ", "🥢"],
+      ["Mì xào giòn hải sản", "soi", "nong", "kho", "dam-da", "chinh", "50.000đ - 70.000đ", "🦐"],
+      ["Mì Indomie trộn trứng lòng đào", "soi", "nong", "kho", "dam-da", "vat", "25.000đ - 40.000đ", "🍳"],
+      ["Mì cay hải sản cấp độ 7", "soi", "nong", "nuoc", "chua-cay", "vat", "45.000đ - 65.000đ", "🔥"],
+      ["Mì tương đen Hàn Quốc (Jajangmyeon)", "soi", "nong", "kho", "ngot", "chinh", "50.000đ - 70.000đ", "🍝"],
+      ["Mì lạnh Hàn Quốc (Naengmyeon)", "soi", "lanh", "nuoc", "chua-cay", "chinh", "55.000đ - 75.000đ", "❄️"],
+      ["Mì Ramen Tonkotsu Nhật Bản", "soi", "nong", "nuoc", "dam-da", "chinh", "75.000đ - 110.000đ", "🍜"],
+      ["Mì Udon xào bò", "soi", "nong", "kho", "dam-da", "chinh", "55.000đ - 75.000đ", "🥩"],
+      ["Hủ tiếu Nam Vang", "soi", "nong", "nuoc", "thanh-dam", "sang", "45.000đ - 65.000đ", "🍜"],
+      ["Bánh đa cua Hải Phòng", "soi", "nong", "nuoc", "dam-da", "sang", "40.000đ - 55.000đ", "🦀"],
+      ["Bánh canh cua giò heo", "soi", "nong", "nuoc", "dam-da", "chinh", "45.000đ - 65.000đ", "🦀"],
+
+      // 3. Bánh Mì – Xôi – Cháo – Điểm Tâm (30 món)
+      ["Bánh mì pate trứng chả", "sang", "nong", "kho", "dam-da", "sang", "20.000đ - 30.000đ", "🥖"],
+      ["Bánh mì chảo đầy đủ", "sang", "nong", "kho", "dam-da", "sang", "40.000đ - 55.000đ", "🍳"],
+      ["Bánh mì sốt vang", "sang", "nong", "nuoc", "dam-da", "sang", "35.000đ - 50.000đ", "🍲"],
+      ["Bánh mì thịt xiên nướng", "sang", "nong", "kho", "dam-da", "sang", "25.000đ - 35.000đ", "🍢"],
+      ["Bánh mì dân tổ", "sang", "nong", "kho", "dam-da", "vat", "25.000đ - 35.000đ", "🥖"],
+      ["Bánh mì heo quay da giòn", "sang", "nong", "kho", "dam-da", "sang", "25.000đ - 40.000đ", "🥓"],
+      ["Bánh mì gà xé sốt bơ", "sang", "nguoi", "kho", "dam-da", "sang", "25.000đ - 35.000đ", "🍗"],
+      ["Bánh mì bò kho", "sang", "nong", "nuoc", "dam-da", "sang", "40.000đ - 55.000đ", "🍲"],
+      ["Bánh mì xíu mại Đà Lạt", "sang", "nong", "nuoc", "thanh-dam", "sang", "25.000đ - 35.000đ", "🥣"],
+      ["Bánh mì phá lấu", "sang", "nong", "nuoc", "dam-da", "vat", "30.000đ - 45.000đ", "🥘"],
+      ["Bánh mì que Hải Phòng", "sang", "nong", "kho", "chua-cay", "vat", "15.000đ - 25.000đ", "🥖"],
+      ["Bánh mì Thổ Nhĩ Kỳ (Doner Kebab)", "sang", "nong", "kho", "dam-da", "sang", "25.000đ - 35.000đ", "🥙"],
+      ["Xôi xéo hành phi ruốc", "sang", "nong", "kho", "dam-da", "sang", "20.000đ - 30.000đ", "🍚"],
+      ["Xôi thịt kho trứng cút", "sang", "nong", "kho", "dam-da", "sang", "30.000đ - 45.000đ", "🥚"],
+      ["Xôi gà nấm xì dầu", "sang", "nong", "kho", "dam-da", "sang", "35.000đ - 50.000đ", "🍗"],
+      ["Xôi chả mực Hạ Long", "sang", "nong", "kho", "dam-da", "sang", "40.000đ - 55.000đ", "🦑"],
+      ["Xôi chim bồ câu", "sang", "nong", "kho", "dam-da", "sang", "45.000đ - 65.000đ", "🐦"],
+      ["Xôi lòng gà trứng non", "sang", "nong", "kho", "dam-da", "vat", "35.000đ - 50.000đ", "🍳"],
+      ["Xôi khúc nóng (bánh khúc)", "sang", "nong", "kho", "dam-da", "sang", "20.000đ - 30.000đ", "🍙"],
+      ["Xôi ngũ sắc", "sang", "nguoi", "kho", "thanh-dam", "sang", "25.000đ - 35.000đ", "🌈"],
+      ["Bánh cuốn nóng chả quế", "sang", "nong", "kho", "thanh-dam", "sang", "30.000đ - 45.000đ", "🥟"],
+      ["Bánh cuốn trứng Lạng Sơn", "sang", "nong", "nuoc", "thanh-dam", "sang", "30.000đ - 45.000đ", "🥚"],
+      ["Bánh ướt lòng gà Đà Lạt", "sang", "nguoi", "kho", "chua-cay", "sang", "35.000đ - 50.000đ", "🍗"],
+      ["Bánh giò nóng giò lụa", "sang", "nong", "kho", "thanh-dam", "sang", "20.000đ - 30.000đ", "🥟"],
+      ["Bánh bao nhân thịt trứng cút", "sang", "nong", "kho", "thanh-dam", "sang", "15.000đ - 25.000đ", "🥟"],
+      ["Cháo sườn quẩy ruốc", "sang", "nong", "nuoc", "thanh-dam", "sang", "25.000đ - 35.000đ", "🥣"],
+      ["Cháo trai hành răm", "sang", "nong", "nuoc", "thanh-dam", "vat", "25.000đ - 35.000đ", "🐚"],
+      ["Cháo gà xé phay", "sang", "nong", "nuoc", "thanh-dam", "chinh", "35.000đ - 50.000đ", "🍗"],
+      ["Cháo lòng dồi sụn", "sang", "nong", "nuoc", "dam-da", "sang", "35.000đ - 50.000đ", "🥣"],
+      ["Cháo ếch Singapore", "sang", "nong", "nuoc", "chua-cay", "vat", "55.000đ - 80.000đ", "🐸"],
+
+      // 4. Món Cuốn & Bánh Mặn Vùng Miền (20 món)
+      ["Bánh xèo miền Tây", "cuon", "nong", "kho", "dam-da", "chinh", "40.000đ - 60.000đ", "🥞"],
+      ["Bánh xèo nem lụi miền Trung", "cuon", "nong", "kho", "dam-da", "chinh", "40.000đ - 60.000đ", "🥞"],
+      ["Bánh khọt Vũng Tàu", "cuon", "nong", "kho", "dam-da", "vat", "35.000đ - 50.000đ", "🦐"],
+      ["Bánh căn trứng cút hải sản", "cuon", "nong", "kho", "thanh-dam", "sang", "30.000đ - 45.000đ", "🥚"],
+      ["Bánh bèo chén Huế", "cuon", "nguoi", "kho", "thanh-dam", "vat", "25.000đ - 40.000đ", "🥣"],
+      ["Bánh bột lọc trần / gói lá", "cuon", "nguoi", "kho", "chua-cay", "vat", "25.000đ - 40.000đ", "🥟"],
+      ["Bánh nậm – bánh ram ít", "cuon", "nguoi", "kho", "thanh-dam", "vat", "30.000đ - 45.000đ", "🥟"],
+      ["Bánh đúc nóng thịt băm mộc nhĩ", "cuon", "nong", "nuoc", "dam-da", "vat", "25.000đ - 35.000đ", "🥣"],
+      ["Bánh gối chiên giòn", "cuon", "nong", "kho", "dam-da", "vat", "20.000đ - 35.000đ", "🥟"],
+      ["Bánh tôm Hồ Tây", "cuon", "nong", "kho", "dam-da", "vat", "40.000đ - 60.000đ", "🦐"],
+      ["Nem lụi nướng sả", "cuon", "nong", "kho", "dam-da", "vat", "40.000đ - 60.000đ", "🍢"],
+      ["Gỏi cuốn tôm thịt chấm mắm nêm", "cuon", "lanh", "kho", "thanh-dam", "vat", "30.000đ - 45.000đ", "🌯"],
+      ["Bò bía mặn / bò bía ngọt", "cuon", "nguoi", "kho", "thanh-dam", "vat", "20.000đ - 35.000đ", "🌯"],
+      ["Nem nướng Nha Trang cuốn bánh tráng", "cuon", "nguoi", "kho", "dam-da", "chinh", "45.000đ - 65.000đ", "🌯"],
+      ["Bê thui Cầu Mống cuốn bánh tráng", "cuon", "nguoi", "kho", "dam-da", "chinh", "65.000đ - 95.000đ", "🥩"],
+      ["Thịt heo quay cuốn bánh tráng Trảng Bàng", "cuon", "nguoi", "kho", "dam-da", "chinh", "60.000đ - 90.000đ", "🥓"],
+      ["Cá lóc nướng trui cuốn rau sống", "cuon", "nong", "kho", "thanh-dam", "chinh", "70.000đ - 110.000đ", "🐟"],
+      ["Há cảo – Xíu mại – Chân gà tàu xì (Dimsum)", "cuon", "nong", "kho", "thanh-dam", "sang", "50.000đ - 85.000đ", "🥟"],
+      ["Bánh bao kim sa", "cuon", "nong", "kho", "ngot", "vat", "25.000đ - 40.000đ", "🟡"],
+      ["Súp cua trứng bắc thảo", "cuon", "nong", "nuoc", "thanh-dam", "vat", "30.000đ - 45.000đ", "🦀"],
+
+      // 5. Món Âu – Á Hiện Đại & Fast Food (25 món)
+      ["Mì Ý sốt bò bằm (Spaghetti Bolognese)", "au-a", "nong", "kho", "dam-da", "chinh", "55.000đ - 80.000đ", "🍝"],
+      ["Mì Ý sốt kem nấm thịt xông khói (Carbonara)", "au-a", "nong", "kho", "dam-da", "chinh", "60.000đ - 85.000đ", "🍝"],
+      ["Mì Ý hải sản sốt cà chua", "au-a", "nong", "kho", "chua-cay", "chinh", "65.000đ - 90.000đ", "🦐"],
+      ["Nui đút lò phô mai (Mac & Cheese)", "au-a", "nong", "kho", "dam-da", "chinh", "55.000đ - 75.000đ", "🧀"],
+      ["Pizza hải sản phô mai", "au-a", "nong", "kho", "dam-da", "chinh", "90.000đ - 160.000đ", "🍕"],
+      ["Pizza xúc xích Pepperoni", "au-a", "nong", "kho", "dam-da", "chinh", "85.000đ - 150.000đ", "🍕"],
+      ["Pizza bò bằm ngô ngọt", "au-a", "nong", "kho", "dam-da", "chinh", "85.000đ - 145.000đ", "🍕"],
+      ["Hamburger bò 2 tầng phô mai", "au-a", "nong", "kho", "dam-da", "chinh", "55.000đ - 85.000đ", "🍔"],
+      ["Hamburger gà giòn cay", "au-a", "nong", "kho", "chua-cay", "chinh", "45.000đ - 65.000đ", "🍔"],
+      ["Gà rán truyền thống + khoai tây chiên", "au-a", "nong", "kho", "dam-da", "vat", "50.000đ - 80.000đ", "🍗"],
+      ["Gà rán sốt cay ngọt Hàn Quốc", "au-a", "nong", "kho", "chua-cay", "vat", "55.000đ - 85.000đ", "🍗"],
+      ["Gà rán lắc phô mai", "au-a", "nong", "kho", "dam-da", "vat", "55.000đ - 85.000đ", "🧀"],
+      ["Bít tết bò (Beefsteak) khoai tây nghiền", "au-a", "nong", "kho", "dam-da", "chinh", "95.000đ - 160.000đ", "🥩"],
+      ["Bò né 3 ngon bánh mì", "au-a", "nong", "kho", "dam-da", "sang", "45.000đ - 65.000đ", "🍳"],
+      ["Salad ức gà nướng sốt mè rang", "au-a", "lanh", "kho", "thanh-dam", "chinh", "45.000đ - 65.000đ", "🥗"],
+      ["Salad cá ngừ trứng luộc", "au-a", "lanh", "kho", "thanh-dam", "chinh", "45.000đ - 60.000đ", "🥗"],
+      ["Sandwich kẹp thịt nguội phô mai", "au-a", "nguoi", "kho", "thanh-dam", "sang", "25.000đ - 40.000đ", "🥪"],
+      ["Bánh mì Panini nướng giòn", "au-a", "nong", "kho", "dam-da", "sang", "35.000đ - 50.000đ", "🥪"],
+      ["Tacos bò bằm kiểu Mexico", "au-a", "nong", "kho", "chua-cay", "vat", "50.000đ - 75.000đ", "🌮"],
+      ["Burrito gà nướng", "au-a", "nong", "kho", "dam-da", "chinh", "55.000đ - 80.000đ", "🌯"],
+      ["Sushi cá hồi / Sushi tổng hợp", "au-a", "lanh", "kho", "thanh-dam", "chinh", "80.000đ - 150.000đ", "🍣"],
+      ["Sashimi cá hồi tươi", "au-a", "lanh", "kho", "thanh-dam", "chinh", "95.000đ - 180.000đ", "🐟"],
+      ["Cơm cuộn Gimbap truyền thống", "au-a", "nguoi", "kho", "thanh-dam", "vat", "35.000đ - 50.000đ", "🍙"],
+      ["Gimbap chiên xù", "au-a", "nong", "kho", "dam-da", "vat", "40.000đ - 55.000đ", "🍱"],
+      ["Takoyaki (bánh bạch tuộc Nhật)", "au-a", "nong", "kho", "dam-da", "vat", "30.000đ - 45.000đ", "🐙"],
+
+      // 6. Ăn Vặt & Đồ Chiên Nướng Đường Phố (20 món)
+      ["Nem chua rán phố cổ", "an-vat", "nong", "kho", "dam-da", "vat", "30.000đ - 50.000đ", "🍢"],
+      ["Bánh tráng trộn Sài Gòn", "an-vat", "nguoi", "kho", "chua-cay", "vat", "20.000đ - 30.000đ", "🥗"],
+      ["Bánh tráng nướng Đà Lạt", "an-vat", "nong", "kho", "dam-da", "vat", "20.000đ - 30.000đ", "🍕"],
+      ["Bánh tráng cuốn bơ sốt me", "an-vat", "nguoi", "kho", "chua-cay", "vat", "20.000đ - 30.000đ", "🌯"],
+      ["Tokbokki truyền thống chả cá", "an-vat", "nong", "nuoc", "chua-cay", "vat", "35.000đ - 55.000đ", "🌶️"],
+      ["Tokbokki sốt kem cay (Rose Tokbokki)", "an-vat", "nong", "nuoc", "dam-da", "vat", "45.000đ - 65.000đ", "🍲"],
+      ["Chả cá Hàn Quốc xiên que (Odeng)", "an-vat", "nong", "nuoc", "thanh-dam", "vat", "20.000đ - 35.000đ", "🍢"],
+      ["Cánh gà chiên nước mắm", "an-vat", "nong", "kho", "dam-da", "vat", "45.000đ - 70.000đ", "🍗"],
+      ["Cánh gà sốt me tỏi ớt", "an-vat", "nong", "kho", "chua-cay", "vat", "45.000đ - 70.000đ", "🍗"],
+      ["Chân gà sả tắc", "an-vat", "lanh", "kho", "chua-cay", "vat", "35.000đ - 55.000đ", "🍋"],
+      ["Chân gà nướng mật ong", "an-vat", "nong", "kho", "dam-da", "vat", "40.000đ - 65.000đ", "🔥"],
+      ["Chim cút quay ngũ vị", "an-vat", "nong", "kho", "dam-da", "vat", "35.000đ - 55.000đ", "🐦"],
+      ["Xúc xích nướng đá / lạp xưởng nướng đá", "an-vat", "nong", "kho", "dam-da", "vat", "15.000đ - 30.000đ", "🌭"],
+      ["Phô mai que kéo sợi", "an-vat", "nong", "kho", "dam-da", "vat", "25.000đ - 40.000đ", "🧀"],
+      ["Khoai tây lắc phô mai", "an-vat", "nong", "kho", "dam-da", "vat", "25.000đ - 35.000đ", "🍟"],
+      ["Khoai lang kén chiên giòn", "an-vat", "nong", "kho", "ngot", "vat", "20.000đ - 30.000đ", "🍠"],
+      ["Ngô chiên bơ tỏi", "an-vat", "nong", "kho", "ngot", "vat", "25.000đ - 35.000đ", "🌽"],
+      ["Bánh đồng xu phô mai", "an-vat", "nong", "kho", "ngot", "vat", "25.000đ - 35.000đ", "🪙"],
+      ["Chè bưởi / chè thập cẩm", "an-vat", "lanh", "nuoc", "ngot", "vat", "20.000đ - 30.000đ", "🍧"],
+      ["Tào phớ trân châu đường đen", "an-vat", "lanh", "nuoc", "ngot", "vat", "15.000đ - 25.000đ", "🍮"],
+
+      // 7. Lẩu – Nướng – Món Nhậu Tụ Tập (20 món)
+      ["Lẩu Thái Tomyum hải sản", "lau-nuong", "nong", "nuoc", "chua-cay", "vat", "150.000đ - 250.000đ", "🍲"],
+      ["Lẩu riêu cua bắp bò sườn sụn", "lau-nuong", "nong", "nuoc", "thanh-dam", "vat", "160.000đ - 260.000đ", "🦀"],
+      ["Lẩu ếch măng cay", "lau-nuong", "nong", "nuoc", "chua-cay", "vat", "150.000đ - 230.000đ", "🐸"],
+      ["Lẩu gà lá é Phú Yên", "lau-nuong", "nong", "nuoc", "chua-cay", "vat", "160.000đ - 240.000đ", "🐔"],
+      ["Lẩu gà đen Tây Bắc", "lau-nuong", "nong", "nuoc", "thanh-dam", "vat", "180.000đ - 280.000đ", "🍲"],
+      ["Lẩu bò nhúng dấm", "lau-nuong", "nong", "nuoc", "chua-cay", "vat", "160.000đ - 250.000đ", "🥩"],
+      ["Lẩu đuôi bò thuốc bắc", "lau-nuong", "nong", "nuoc", "dam-da", "vat", "180.000đ - 280.000đ", "🍲"],
+      ["Lẩu cá kèo lá giang", "lau-nuong", "nong", "nuoc", "chua-cay", "vat", "150.000đ - 220.000đ", "🐟"],
+      ["Lẩu cá tầm măng chua", "lau-nuong", "nong", "nuoc", "chua-cay", "vat", "180.000đ - 280.000đ", "🐟"],
+      ["Lẩu cháo chim bồ câu", "lau-nuong", "nong", "nuoc", "thanh-dam", "vat", "160.000đ - 240.000đ", "🥣"],
+      ["Lẩu kim chi ba chỉ bò Hàn Quốc", "lau-nuong", "nong", "nuoc", "chua-cay", "vat", "150.000đ - 230.000đ", "🌶️"],
+      ["Lẩu Tứ Xuyên cay tê", "lau-nuong", "nong", "nuoc", "chua-cay", "vat", "180.000đ - 300.000đ", "🔥"],
+      ["Nướng chảo gang (ba chỉ bò, nầm, lòng)", "lau-nuong", "nong", "kho", "dam-da", "vat", "120.000đ - 200.000đ", "🥩"],
+      ["Nướng ngói Đà Lạt", "lau-nuong", "nong", "kho", "dam-da", "vat", "130.000đ - 210.000đ", "🔥"],
+      ["Bò nướng tảng sốt trứng muối / phô mai", "lau-nuong", "nong", "kho", "dam-da", "vat", "140.000đ - 220.000đ", "🧀"],
+      ["Nầm bò nướng bơ tỏi", "lau-nuong", "nong", "kho", "dam-da", "vat", "110.000đ - 180.000đ", "🥩"],
+      ["Vịt nướng Vân Đình", "lau-nuong", "nong", "kho", "dam-da", "chinh", "120.000đ - 180.000đ", "🦆"],
+      ["Ếch rang muối / ếch xào sả ớt", "lau-nuong", "nong", "kho", "chua-cay", "vat", "90.000đ - 140.000đ", "🐸"],
+      ["Mực hấp gừng / mực chiên xù", "lau-nuong", "nong", "kho", "thanh-dam", "vat", "100.000đ - 160.000đ", "🦑"],
+      ["Ốc luộc lá chanh / ốc xào me", "lau-nuong", "nong", "kho", "chua-cay", "vat", "50.000đ - 90.000đ", "🐚"]
+    ];
+
+    let foods = RAW_FOODS.map((f, idx) => ({
+      id: idx + 1,
+      name: f[0],
+      cat: f[1],
+      temp: f[2],
+      type: f[3],
+      taste: f[4],
+      meal: f[5],
+      price: f[6],
+      emoji: f[7]
+    }));
+
+    // Load món người dùng tự thêm từ localStorage
+    const savedCustom = JSON.parse(localStorage.getItem("customFoods_v2") || "[]");
+    foods = [...savedCustom, ...foods];
+
+    const filters = {
+      cat: "all",
+      temp: "all",
+      type: "all",
+      taste: "all",
+      meal: "all",
+      search: ""
+    };
+
+    let currentMatches = [...foods];
+    let pickedId = null;
+
+    const foodGrid = document.getElementById("foodGrid");
+    const resultsCount = document.getElementById("resultsCount");
+    const fallbackNote = document.getElementById("fallbackNote");
+    const spotlight = document.getElementById("spotlight");
+
+    function getFilteredFoods() {
+      const q = filters.search.trim().toLowerCase();
+
+      // Lọc chính xác 100%
+      let exact = foods.filter(item => {
+        if (q && !item.name.toLowerCase().includes(q)) return false;
+        if (filters.cat !== "all" && item.cat !== filters.cat) return false;
+        if (filters.temp !== "all" && item.temp !== filters.temp) return false;
+        if (filters.type !== "all" && item.type !== filters.type) return false;
+        if (filters.taste !== "all" && item.taste !== filters.taste) return false;
+        if (filters.meal !== "all" && item.meal !== filters.meal) return false;
+        return true;
+      });
+
+      if (exact.length >= 2 || q) {
+        fallbackNote.style.display = "none";
+        return exact;
+      }
+
+      // Nếu tổ hợp quá hẹp (< 2 món), tính điểm tương đồng để luôn gợi ý ít nhất 3-6 món sát nhất
+      const scored = foods
+        .filter(item => filters.cat === "all" || item.cat === filters.cat)
+        .map(item => {
+          let score = 0;
+          if (filters.temp !== "all" && item.temp === filters.temp) score += 2;
+          if (filters.type !== "all" && item.type === filters.type) score += 2;
+          if (filters.taste !== "all" && item.taste === filters.taste) score += 1;
+          if (filters.meal !== "all" && item.meal === filters.meal) score += 1;
+          return { item, score };
+        })
+        .sort((a, b) => b.score - a.score);
+
+      fallbackNote.style.display = "block";
+      return scored.slice(0, 8).map(s => s.item);
+    }
+
+    function render() {
+      currentMatches = getFilteredFoods();
+      resultsCount.innerHTML = `Hiển thị <strong>${currentMatches.length}</strong> món ăn phù hợp`;
+
+      if (currentMatches.length === 0) {
+        foodGrid.innerHTML = `<p style="color:var(--text-muted);grid-column:1/-1;text-align:center;padding:30px;">Không tìm thấy món ăn nào khớp từ khóa "${filters.search}". Hãy thử từ khóa khác nhé!</p>`;
+        return;
+      }
+
+      foodGrid.innerHTML = currentMatches.map(f => `
+        <article class="card ${f.id === pickedId ? 'picked' : ''}" id="food-${f.id}">
+          <div>
+            <div class="card-top">
+              <span class="card-emoji">${f.emoji}</span>
+              <span class="card-price">${f.price}</span>
+            </div>
+            <div class="card-cat">${CAT_LABELS[f.cat] || f.cat}</div>
+            <h3 class="card-title">${f.name}</h3>
+          </div>
+          <div class="tags">
+            <span class="tag">${LABELS[f.temp]}</span>
+            <span class="tag">${LABELS[f.type]}</span>
+            <span class="tag">${LABELS[f.taste]}</span>
+            <span class="tag">${LABELS[f.meal]}</span>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    // Xử lý bấm chip bộ lọc
+    document.querySelectorAll(".chips").forEach(group => {
+      const key = group.dataset.filter;
+      group.addEventListener("click", e => {
+        const btn = e.target.closest(".chip");
+        if (!btn) return;
+        group.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
+        btn.classList.add("active");
+        filters[key] = btn.dataset.val;
+        pickedId = null;
+        spotlight.classList.remove("show");
+        render();
+      });
+    });
+
+    // Tìm kiếm
+    document.getElementById("searchInput").addEventListener("input", e => {
+      filters.search = e.target.value;
+      pickedId = null;
+      spotlight.classList.remove("show");
+      render();
+    });
+
+    // Quay ngẫu nhiên xổ số
+    function pickRandom() {
+      if (currentMatches.length === 0) return;
+      let count = 0;
+      const maxSpins = 12;
+      spotlight.classList.add("show");
+
+      const timer = setInterval(() => {
+        const tempPick = currentMatches[Math.floor(Math.random() * currentMatches.length)];
+        document.getElementById("spotTitle").textContent = `${tempPick.emoji} ${tempPick.name}`;
+        document.getElementById("spotMeta").textContent = `${CAT_LABELS[tempPick.cat]} • ${tempPick.price}`;
+        count++;
+
+        if (count >= maxSpins) {
+          clearInterval(timer);
+          const finalPick = currentMatches[Math.floor(Math.random() * currentMatches.length)];
+          pickedId = finalPick.id;
+          document.getElementById("spotTitle").textContent = `${finalPick.emoji} ${finalPick.name}`;
+          document.getElementById("spotMeta").textContent = `${CAT_LABELS[finalPick.cat]} • ${finalPick.price} • ${LABELS[finalPick.temp]} • ${LABELS[finalPick.type]}`;
+          render();
+          const el = document.getElementById(`food-${finalPick.id}`);
+          if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      }, 65);
+    }
+
+    document.getElementById("btnRandom").addEventListener("click", pickRandom);
+    document.getElementById("btnReroll").addEventListener("click", pickRandom);
+
+    // Đặt lại bộ lọc
+    document.getElementById("btnReset").addEventListener("click", () => {
+      filters.cat = "all";
+      filters.temp = "all";
+      filters.type = "all";
+      filters.taste = "all";
+      filters.meal = "all";
+      filters.search = "";
+      pickedId = null;
+      document.getElementById("searchInput").value = "";
+      spotlight.classList.remove("show");
+      document.querySelectorAll(".chips").forEach(group => {
+        group.querySelectorAll(".chip").forEach((c, i) => c.classList.toggle("active", i === 0));
+      });
+      render();
+    });
+
+    // Modal thêm món mới
+    const modalBackdrop = document.getElementById("modalBackdrop");
+    document.getElementById("btnOpenModal").addEventListener("click", () => modalBackdrop.classList.add("open"));
+    document.getElementById("btnCloseModal").addEventListener("click", () => modalBackdrop.classList.remove("open"));
+
+    document.getElementById("btnSaveFood").addEventListener("click", () => {
+      const name = document.getElementById("newName").value.trim();
+      if (!name) return alert("Vui lòng nhập tên món ăn!");
+
+      const newFood = {
+        id: Date.now(),
+        name,
+        cat: document.getElementById("newCat").value,
+        temp: document.getElementById("newTemp").value,
+        type: document.getElementById("newType").value,
+        taste: document.getElementById("newTaste").value,
+        meal: document.getElementById("newMeal").value,
+        price: document.getElementById("newPrice").value.trim() || "35.000đ - 50.000đ",
+        emoji: "🍽️"
+      };
+
+      const customList = JSON.parse(localStorage.getItem("customFoods_v2") || "[]");
+      customList.unshift(newFood);
+      localStorage.setItem("customFoods_v2", JSON.stringify(customList));
+
+      foods.unshift(newFood);
+      document.getElementById("newName").value = "";
+      modalBackdrop.classList.remove("open");
+      render();
+    });
+
+    // Khởi chạy lần đầu
+    render();
+  </script>
+</body>
+</html>
