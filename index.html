@@ -27,8 +27,10 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .btn-accent:hover:not(:disabled){filter:brightness(1.08);transform:translateY(-1px)}
 .controls{margin-bottom:28px;width:100%}
 .search-wrap{position:relative;margin-bottom:16px}
-.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-muted);pointer-events:none}
-.search-input{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:11px 16px 11px 38px;border-radius:10px;font-size:.9rem;outline:none}
+.search-icon{position:absolute;left:0;top:0;bottom:0;width:44px;display:flex;align-items:center;justify-content:center;color:var(--text-secondary);pointer-events:none;transition:color var(--t)}
+.search-icon svg{width:18px;height:18px;display:block;transform:translate(1px,1px)}
+.search-wrap:focus-within .search-icon{color:var(--accent)}
+.search-input{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:12px 16px 12px 44px;border-radius:10px;font-size:.92rem;outline:none}
 .search-input:focus{border-color:var(--accent-border)}
 .filter-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;width:100%;overflow:hidden}
 .filter-row{display:flex;align-items:baseline;gap:14px;padding-bottom:12px;margin-bottom:14px;border-bottom:1px solid rgba(42,39,36,.55)}
@@ -130,8 +132,13 @@ button:disabled{opacity:.5;cursor:not-allowed}
 
   <section class="controls">
     <div class="search-wrap">
-      <span class="search-icon" aria-hidden="true">⌕</span>
-      <input type="search" id="searchInput" class="search-input" aria-label="Tìm món ăn" placeholder="Tìm món ăn, bánh, kem, trà sữa... (gõ không dấu cũng được)" />
+      <span class="search-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="10.5" cy="10.5" r="6.5"></circle>
+          <line x1="15.5" y1="15.5" x2="20.5" y2="20.5"></line>
+        </svg>
+      </span>
+      <input type="search" id="searchInput" class="search-input" aria-label="Tìm kiếm món ăn, thức uống" placeholder="Tìm kiếm món ăn, thức uống..." />
     </div>
     <div class="filter-box">
       <div class="filter-row"><span class="filter-title">Danh mục</span><div class="chips" data-filter="cat" id="catChips"></div></div>
